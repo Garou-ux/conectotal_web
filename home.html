@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>ConectoTotal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <!-- Favicon icon -->
+    <link rel="icon" href="../files/assets/images/favicon.ico" type="image/x-icon">
+    <!-- Google font-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
+    <!-- Required Fremwork -->
+    <link rel="stylesheet" type="text/css" href="./assets/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <!-- themify-icons line icon -->
+    <link rel="stylesheet" type="text/css" href="./assets/icon/themify-icons/themify-icons.css">
+    <!-- ico font -->
+    <link rel="stylesheet" type="text/css" href="./assets/icon/icofont/css/icofont.css">
+    <!-- feather Awesome -->
+    <link rel="stylesheet" type="text/css" href="./assets/icon/feather/css/feather.css">
+    <!-- Style.css -->
+    <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="./assets/css/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" href="./assets/scss/partials/menu/_pcmenu.scss">
+    <script src="./assets/bower_components/jquery/dist/jquery.min.js"></script>
+</head>
+<body>
+    <div class="theme-loader">
+        <div class="ball-scale">
+            <div class='contain'>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="pcoded" class="pcoded">
+        <div class="pcoded-overlay-box"></div>
+        <div class="pcoded-container navbar-wrapper">
+            <div id="header"></div>
+            <div class="pcoded-main-container">
+                <div class="pcoded-wrapper">
+                    <div id="sidebarLayout"></div>
+                    <div class="pcoded-content">
+                        <div class="pcoded-inner-content">
+                            <div id="contenido"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  <script>
+    $('#header').load('partials/header.html');
+    $('#sidebarLayout').load('partials/sidebar.html');
+    // $('#footer').load('partials/footer.html');
+  </script>
+
+  <!-- Scripts base del template -->
+  <script src="assets/bower_components/jquery-ui/jquery-ui.min.js"></script>
+  <script src="assets/bower_components/popper.js/dist/umd/popper.min.js"></script>
+  <script src="assets/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="assets/bower_components/jquery-slimscroll/jquery.slimscroll.js"></script>
+  <script src="assets/bower_components/modernizr/modernizr.js"></script>
+  <script src="assets/bower_components/modernizr/feature-detects/css-scrollbars.js"></script>
+  <script src="assets/bower_components/i18next/i18next.min.js"></script>
+  <script src="assets/bower_components/i18next-xhr-backend/i18nextXHRBackend.min.js"></script>
+  <script src="assets/bower_components/i18next-browser-languagedetector/i18nextBrowserLanguageDetector.min.js"></script>
+  <script src="assets/bower_components/jquery-i18next/jquery-i18next.min.js"></script>
+  <script src="assets/js/pcoded.min.js"></script>
+  <script src="assets/js/vartical-layout.min.js"></script>
+  <script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+  <script src="assets/js/script.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script>
+    // const modulo = new URLSearchParams(window.location.search).get('modulo') || 'dashboard';
+
+    // // Cargar HTML del módulo
+    // $('#contenido').load(`modules/${modulo}.html`, function(response, status, xhr) {
+    //     if (status === 'error') {
+    //         $('#contenido').html('<div class="alert alert-danger">Módulo no encontrado.</div>');
+    //     } else {
+    //         // Cargar su JS asociado
+    //         const scriptPath = `modules/${modulo}.js`;
+    //         $.getScript(scriptPath)
+    //         .done(() => console.log(`${modulo}.js cargado`))
+    //         .fail(() => console.warn(`No se encontró ${modulo}.js (no es obligatorio)`));
+    //     }
+    // });
+
+    const modulo = new URLSearchParams(window.location.search).get('modulo') || 'dashboard';
+
+$('#contenido').load(`modules/${modulo}.html`, function (response, status, xhr) {
+  if (status === 'error') {
+    $('#contenido').html('<div class="alert alert-danger">Módulo no encontrado.</div>');
+  } else {
+    const scriptPath = `modules/${modulo}.js`;
+    $.getScript(scriptPath)
+      .done(() => {
+        console.log(`${modulo}.js cargado`);
+        if (typeof ERP.onModuloCargado === 'function') {
+          ERP.onModuloCargado(modulo);
+        }
+      })
+      .fail(() => {
+        console.warn(`No se encontró ${modulo}.js`);
+        if (typeof ERP.onModuloCargado === 'function') {
+          ERP.onModuloCargado(modulo); // igual ejecuta hook
+        }
+      });
+  }
+});
+
+  </script>
+
+</body>
+</html>
