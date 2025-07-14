@@ -1,0 +1,72 @@
+<div class="main-body">
+    <div class="page-wrapper">
+        <div class="page-header">
+            <div class="row align-items-end">
+                <div class="col-lg-8">
+                    <div class="page-header-title">
+                        <div class="d-inline">
+                            <h4>Cliente <span id="titulo"></span></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-body">
+            <form id="formController">
+             <input type="hidden" id="id" name="id" value="0" />
+            <div class="col-xl-12 col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Datos Generales</h5>
+                        <div class="card-header-right">
+                            <ul class="list-unstyled card-option">
+                                <li><i class="feather minimize-card icon-minus"></i></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-block">
+                            <div class="mb-3">
+                                <label for="nombre">Nombre</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre">
+                            </div>
+                            <div class="mb-3">
+                                <label for="rfc">RFC</label>
+                                <input type="text" class="form-control" id="rfc" name="rfc">
+                            </div>
+                            <div class="mb-3">
+                                <label for="razon_social"> Razon Social</label>
+                                <input type="text" class="form-control" id="razon_social" name="razon_social">
+                            </div>
+                            <div class="mb-3">
+                                <label>Email</label>
+                                <input type="email" class="form-control" id="email" name="email">
+                            </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-12 col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Direccion</h5>
+                        <div class="card-header-right">
+                            <ul class="list-unstyled card-option">
+                                <li><i class="feather minimize-card icon-minus"></i></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-block">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl 12 col-md-12">
+                <div class="card">
+                    <div class="card-block">
+                    <button type="submit" id="buttonSave" class="btn btn-primary">Guardar</button>
+                    </div>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>

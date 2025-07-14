@@ -1,56 +1,3 @@
-// // assets/js/main.js
-
-// (function () {
-//   const ERP = {
-//     /**
-//      * Retorna el path base del proyecto dinámicamente, sin /
-//      * Ej: si estás en /conectotal_web/home.html → /conectotal_web
-//      */
-//     getBasePath: function () {
-//       const parts = window.location.pathname.split('/');
-//       parts.pop(); // quita el archivo actual (home.html)
-//       return parts.join('/') || '/';
-//     },
-
-//     /**
-//      * Retorna la ruta completa de home.html con un módulo dado
-//      */
-//     getModuloUrl: function (modulo) {
-//       return `${this.getBasePath()}/home.html?modulo=${modulo}`;
-//     },
-
-//     /**
-//      * Inicializa el menú lateral con rutas dinámicas
-//      */
-//     initDynamicSidebar: function () {
-//       const basePath = this.getBasePath();
-//       $('[data-modulo]').each(function () {
-//         const modulo = $(this).data('modulo');
-//         $(this).attr('href', `${basePath}/home.html?modulo=${modulo}`);
-//       });
-//     },
-
-//     /**
-//      * Inicializador general (puedes agregar más hooks aquí)
-//      */
-//     init: function () {
-//       this.initDynamicSidebar();
-//       console.log('ERP iniciado con basePath:', this.getBasePath());
-//     }
-//   };
-
-//   // Exponemos globalmente si lo necesitas en otros scripts
-//   window.ERP = ERP;
-
-//   // Ejecutamos automáticamente al cargar
-//   $(document).ready(() => ERP.init());
-// })();
-
-
-// assets/js/main.js
-
-// assets/js/main.js
-
 (function () {
   const ERP = {
     getBasePath: function () {
@@ -59,8 +6,11 @@
       return parts.join('/') || '/';
     },
 
-    getModuloUrl: function (modulo) {
-      return `${this.getBasePath()}/home.html?modulo=${modulo}`;
+    getModuloUrl: function (modulo, id = null) {
+      const url = new URL(window.location.origin + this.getBasePath() + '/home.html');
+      url.searchParams.set('modulo', modulo);
+      if (id !== null) url.searchParams.set('id', id);
+      return url.toString();
     },
 
     initDynamicSidebar: function () {
@@ -71,27 +21,82 @@
       });
     },
 
-    // Hook: se ejecuta cuando un módulo fue cargado
-    onModuloCargado: function (modulo) {
-      if (modulo === 'facturas') {
-        console.log('[Hook] Inicializando lógica de facturas...');
-        if (typeof ERP.initFacturas === 'function') ERP.initFacturas();
-      }
+    cargarModuloActual: function () {
+      const params = new URLSearchParams(window.location.search);
+      const modulo = params.get('modulo') || 'dashboard';
+      const id = params.get('id') || null;
 
-      if (modulo === 'cotizaciones') {
-        console.log('[Hook] Inicializando lógica de cotizaciones...');
-        if (typeof ERP.initCotizaciones === 'function') ERP.initCotizaciones();
-      }
+      const rutaHtml = `modules/${modulo}.html`;
+      const rutaJs = `modules/${modulo}.js`;
 
-      // Puedes seguir agregando aquí tus módulos
+      $('#contenido').load(rutaHtml, function (response, status) {
+        if (status === 'error') {
+          $('#contenido').html('<div class="alert alert-danger">Módulo no encontrado.</div>');
+        } else {
+          $.getScript(rutaJs)
+            .done(() => {
+              console.log(`${modulo}.js cargado`);
+              if (typeof ERP.onModuloCargado === 'function') {
+                ERP.onModuloCargado(modulo, id);
+              }
+            })
+            .fail(() => {
+              console.warn(`${modulo}.js no encontrado`);
+              if (typeof ERP.onModuloCargado === 'function') {
+                ERP.onModuloCargado(modulo, id);
+              }
+            });
+        }
+      });
+    },
+
+    onModuloCargado: function (modulo, id) {
+      console.log(`[Hook] Módulo cargado: ${modulo}`, { id });
+
+      // Puedes extender con hooks específicos
+      if (modulo === 'facturas' && typeof ERP.initFacturas === 'function') ERP.initFacturas();
+      if (modulo === 'cotizaciones' && typeof ERP.initCotizaciones === 'function') ERP.initCotizaciones();
+    },
+
+    navegarAModulo: function (modulo, id = null) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('modulo', modulo);
+      if (id !== null) url.searchParams.set('id', id);
+      else url.searchParams.delete('id');
+
+      window.history.pushState({}, '', url);
+      this.cargarModuloActual();
     },
 
     init: function () {
       this.initDynamicSidebar();
-    }
+      this.cargarModuloActual();
+
+      window.addEventListener('popstate', () => {
+        this.cargarModuloActual();
+      });
+    },
+
+    controlesDiv: function(){
+        $(".card-header-right .minimize-card").on('click', function() {
+            var $this = $(this);
+            var port = $($this.parents('.card'));
+            var card = $(port).children('.card-block').slideToggle();
+            $(this).toggleClass("icon-minus").fadeIn('slow');
+            $(this).toggleClass("icon-plus").fadeIn('slow');
+        });
+        $(".card-header-right .full-card").on('click', function() {
+            var $this = $(this);
+            var port = $($this.parents('.card'));
+            port.toggleClass("full-card");
+            $(this).toggleClass("icon-maximize");
+            $(this).toggleClass("icon-minimize");
+        });
+    },
+
   };
 
   window.ERP = ERP;
+
   $(document).ready(() => ERP.init());
 })();
-
