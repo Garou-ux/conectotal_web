@@ -1,252 +1,32 @@
-// function JsGridComponent(containerId, apiColumnsUrl, apiDataUrl, moduloAltaRuta) {
-//   this.containerId = containerId;
-//   this.apiColumnsUrl = apiColumnsUrl;
-//   this.apiDataUrl = apiDataUrl;
-//   this.moduloAltaRuta = moduloAltaRuta;
-// }
-
-// JsGridComponent.prototype.init = function (onDataLoaded = () => {}) {
-//   const self = this;
-
-//   const $wrapper = $('#' + this.containerId);
-//   const $buttonNuevo = $('<button class="btn btn-sm btn-success mb-2">+ Nuevo</button>');
-//   $buttonNuevo.on('click', function () {
-//     self.navegarAModulo(0);
-//   });
-//   $wrapper.before($buttonNuevo);
-
-//   $.when(
-//     Api.post(this.apiColumnsUrl),
-//     Api.post(this.apiDataUrl)
-//   ).done(function (columnasRes, dataRes) {
-//     const columnas = columnasRes.data;
-//     const datos = dataRes.data;
-
-//     // Callback personalizado con los datos
-//     if (typeof onDataLoaded === 'function') {
-//       onDataLoaded(datos);
-//     }
-
-//     const campos = columnas.map(col => ({
-//       name: col.dataField,
-//       title: col.caption,
-//       type: col.dataType || 'text',
-//       width: 100
-//     }));
-
-//     campos.push({
-//       type: 'control',
-//       itemTemplate: function (_, item) {
-//         const $edit = $('<button>')
-//           .addClass('btn btn-sm btn-primary me-1')
-//           .text('✎')
-//           .on('click', () => self.navegarAModulo(item.id));
-
-//         const $delete = $('<button>')
-//           .addClass('btn btn-sm btn-danger')
-//           .text('🗑')
-//           .on('click', function () {
-//             if (confirm('¿Eliminar este registro?')) {
-//               alert('Eliminar: ID ' + item.id); // Aquí puedes implementar DELETE real
-//             }
-//           });
-
-//         return $('<div>').append($edit).append($delete);
-//       },
-//       width: 80,
-//       align: 'center'
-//     });
-
-//     $('#' + self.containerId).jsGrid({
-//       height: 'auto',
-//       width: '100%',
-//       filtering: true,
-//       sorting: true,
-//       paging: true,
-//       autoload: true,
-//       data: datos,
-//       fields: campos
-//     });
-//   });
-// };
-
-// JsGridComponent.prototype.navegarAModulo = function (id) {
-//   ERP.navegarAModulo(this.moduloAltaRuta, id);
-// };
-
-// function JsGridComponent(containerId, apiColumnsPath, apiDataPath, moduloAltaRuta) {
-//   this.containerId = containerId;
-//   this.apiColumnsPath = apiColumnsPath;
-//   this.apiDataPath = apiDataPath;
-//   this.moduloAltaRuta = moduloAltaRuta;
-// }
-
-// JsGridComponent.prototype.init = async function (onDataLoaded = () => {}) {
-//   const self = this;
-
-//   const $wrapper = $('#' + this.containerId);
-//   const $buttonNuevo = $('<button class="btn btn-sm btn-success mb-2">+ Nuevo</button>');
-//   $buttonNuevo.on('click', function () {
-//     self.navegarAModulo(0); // id = 0 => nuevo
-//   });
-//   $wrapper.before($buttonNuevo);
-
-//   try {
-//     const [columnasRes, datosRes] = await Promise.all([
-//       Api.post(this.apiColumnsPath),
-//       Api.post(this.apiDataPath)
-//     ]);
-
-//     if (columnasRes.status !== 'success' || datosRes.status !== 'success') {
-//       throw new Error('Error al cargar columnas o datos');
-//     }
-
-//     const columnas = columnasRes.data;
-//     const datos = datosRes.data;
-
-//     // Ejecutar callback con los datos cargados
-//     if (typeof onDataLoaded === 'function') {
-//       onDataLoaded(datos);
-//     }
-
-//     const campos = columnas.map(col => ({
-//       name: col.dataField,
-//       title: col.caption,
-//       type: col.dataType || 'text',
-//       width: 100
-//     }));
-
-//     // Agregar columna de acciones
-//     campos.push({
-//       type: 'control',
-//       itemTemplate: function (_, item) {
-//         const $edit = $('<button>').addClass('btn btn-sm btn-primary me-1').text('✎').on('click', function () {
-//           self.navegarAModulo(item.id);
-//         });
-//         const $delete = $('<button>').addClass('btn btn-sm btn-danger').text('🗑').on('click', function () {
-//           if (confirm('¿Eliminar registro?')) {
-//             alert('Eliminar: ID ' + item.id); // Aquí puedes implementar el DELETE real
-//           }
-//         });
-//         return $('<div>').append($edit).append($delete);
-//       },
-//       width: 80,
-//       align: 'center'
-//     });
-
-//     $('#' + self.containerId).jsGrid({
-//       height: 'auto',
-//       width: '100%',
-//       filtering: true,
-//       sorting: true,
-//       paging: true,
-//       autoload: true,
-//       data: datos,
-//       fields: campos
-//     });
-
-//   } catch (error) {
-//     console.error('Error cargando el grid:', error);
-//     $wrapper.html('<div class="alert alert-danger">Error al cargar la información del grid.</div>');
-//   }
-// };
-
-// JsGridComponent.prototype.navegarAModulo = function (id) {
-//   ERP.navegarAModulo(this.moduloAltaRuta, id);
-// };
-
-
-
-
 function JsGridComponent(containerId, apiColumnsPath, apiDataPath, moduloAltaRuta, options = {}) {
   this.containerId = containerId;
   this.apiColumnsPath = apiColumnsPath;
   this.apiDataPath = apiDataPath;
   this.moduloAltaRuta = moduloAltaRuta;
-
-  // Opcionales
   this.labelNuevo = options.labelNuevo || 'Nuevo';
   this.enableDateRange = options.enableDateRange || false;
-  this.onDataLoaded = options.onDataLoaded || function () { };
 }
 
-JsGridComponent.prototype.init = async function () {
-    const self = this;
-    const $wrapper = $('#' + self.containerId);
-    $wrapper.empty();
 
+JsGridComponent.prototype.init = async function (onDataLoaded = () => {}) {
+  const self = this;
 
-    const $card = $(`
-    <div class="card mb-3">
-        <div class="card-block">
-        <div class="d-flex flex-wrap align-items-center gap-2">
-            ${self.enableDateRange ? `
-            <input type="text" class="form-control form-control-sm me-2" id="dateStart" style="max-width: 150px;" placeholder="Fecha inicio">
-            <input type="text" class="form-control form-control-sm me-3" id="dateEnd" style="max-width: 150px;" placeholder="Fecha fin">
-            ` : ''}
-            <button type="button" class="btn btn-sm btn-success" id="btnNuevo">
-            <i class="icofont icofont-ui-add"></i> ${self.labelNuevo}
-            </button>
-            <button type="button" class="btn btn-sm btn-primary" id="btnExportExcel">
-            <i class="icofont icofont-file-excel"></i>
-            </button>
-            <button type="button" class="btn btn-sm btn-secondary" id="btnReload">
-            <i class="icofont icofont-refresh"></i>
-            </button>
-        </div>
-        </div>
-    </div>
-    `);
+  // Verifica si los controles ya existen (evita duplicarlos)
+  if ($(`#${this.containerId}`).prev('.jsgrid-controls-card').length === 0) {
+    $(`#${this.containerId}`).before(this._buildControlCard());
 
-    $wrapper.before($card);
-
-    // Flatpickr si se habilita
+    // Solo inicializa fechas si es primera vez que se renderiza
     if (self.enableDateRange) {
-        flatpickr("#dateStart", { dateFormat: "Y-m-d" });
-        flatpickr("#dateEnd", { dateFormat: "Y-m-d" });
-
-        $("#dateStart, #dateEnd").on("change", function () {
-        self.loadGrid(); // reload al cambiar fechas
-        });
+      this._initDateFields();
     }
 
-    // Botón de nuevo
-    $card.find('#btnNuevo').on('click', function () {
-        self.navegarAModulo(0);
-    });
-
-    // Botón Excel
-    $card.find('#btnExportExcel').on('click', function () {
-        const table = $wrapper.find("table")[0];
-        if (!table) return alert("No hay datos para exportar.");
-        const wb = XLSX.utils.table_to_book(table);
-        XLSX.writeFile(wb, "exportado.xlsx");
-    });
-
-    $card.find('#btnReload').on('click', function () {
-        self.loadGrid();
-    });
-
-    // Cargar el grid por primera vez
-    await self.loadGrid();
-};
-
-JsGridComponent.prototype.loadGrid = async function () {
-  const self = this;
-  const $wrapper = $('#' + self.containerId);
-  $wrapper.html('<div class="text-center p-3">Cargando...</div>');
+    this._bindEvents(onDataLoaded); // También solo se necesita una vez
+  }
 
   try {
-    const filtros = {};
-
-    if (self.enableDateRange) {
-      filtros.dateStart = $('#dateStart').val();
-      filtros.dateEnd = $('#dateEnd').val();
-    }
-
     const [columnasRes, datosRes] = await Promise.all([
-      Api.post(self.apiColumnsPath, filtros),
-      Api.post(self.apiDataPath, filtros)
+      Api.post(this.apiColumnsPath),
+      Api.post(this.apiDataPath, this._getFilterParams())
     ]);
 
     if (columnasRes.status !== 'success' || datosRes.status !== 'success') {
@@ -256,8 +36,8 @@ JsGridComponent.prototype.loadGrid = async function () {
     const columnas = columnasRes.data;
     const datos = datosRes.data;
 
-    if (typeof self.onDataLoaded === 'function') {
-      self.onDataLoaded(datos);
+    if (typeof onDataLoaded === 'function') {
+      onDataLoaded(datos);
     }
 
     const campos = columnas.map(col => ({
@@ -270,15 +50,19 @@ JsGridComponent.prototype.loadGrid = async function () {
     campos.push({
       type: 'control',
       itemTemplate: function (_, item) {
-        const $edit = $('<button>').addClass('btn btn-sm btn-primary me-1').text('✎').on('click', function () {
-          self.navegarAModulo(item.id);
-        });
+        const $edit = $('<button>')
+          .addClass('btn btn-sm btn-primary me-1')
+          .text('✎')
+          .on('click', () => self.navegarAModulo(item.id));
 
-        const $delete = $('<button>').addClass('btn btn-sm btn-danger').text('🗑').on('click', function () {
-          if (confirm('¿Eliminar registro?')) {
-            alert('Eliminar: ID ' + item.id);
-          }
-        });
+        const $delete = $('<button>')
+          .addClass('btn btn-sm btn-danger')
+          .text('🗑')
+          .on('click', function () {
+            if (confirm('¿Eliminar este registro?')) {
+              alert('Eliminar: ID ' + item.id); // Aquí puedes implementar DELETE real
+            }
+          });
 
         return $('<div>').append($edit).append($delete);
       },
@@ -286,7 +70,7 @@ JsGridComponent.prototype.loadGrid = async function () {
       align: 'center'
     });
 
-    $wrapper.empty().jsGrid({
+    $('#' + self.containerId).jsGrid({
       height: 'auto',
       width: '100%',
       filtering: true,
@@ -298,8 +82,96 @@ JsGridComponent.prototype.loadGrid = async function () {
     });
 
   } catch (error) {
-    console.error('Error al cargar el grid:', error);
-    $wrapper.html('<div class="alert alert-danger">Error al cargar datos.</div>');
+    console.error('Error cargando el grid:', error);
+    $(`#${this.containerId}`).html('<div class="alert alert-danger">Error al cargar la información del grid.</div>');
+  }
+};
+
+
+JsGridComponent.prototype._buildControlCard = function () {
+  return `
+    <div class="card mb-3 jsgrid-controls-card">
+      <div class="card-block">
+        <div class="d-flex align-items-center justify-content-between flex-wrap">
+
+          ${this.enableDateRange
+            ? `
+              <div class="row gx-2 gy-2 align-items-center mt-2 mt-md-0">
+                <div class="col-12 col-sm-auto">
+                  <input type="date" class="form-control form-control-sm" id="dateStart" />
+                </div>
+                <div class="col-12 col-sm-auto">
+                  <input type="date" class="form-control form-control-sm" id="dateEnd" />
+                </div>
+              </div>
+            `
+            : ''
+          }
+
+          <div class="d-flex align-items-center flex-wrap">
+            <button type="button" id="btnNuevo" class="btn btn-sm btn-success me-2 m-b-5">
+              <i class="icofont icofont-ui-add"></i><span class="ms-1">${this.labelNuevo}</span>
+            </button>
+            <button type="button" id="btnExportar" class="btn btn-sm btn-primary me-2 m-b-5">
+              <i class="icofont icofont-file-excel"></i>
+            </button>
+            <button type="button" id="btnRecargar" class="btn btn-sm btn-secondary m-b-5">
+              <i class="icofont icofont-refresh"></i>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>`;
+};
+
+JsGridComponent.prototype._initDateFields = function () {
+  const today = new Date();
+  const nextMonth = new Date(today);
+  nextMonth.setMonth(today.getMonth() + 1);
+
+  const formatDate = (date) => {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  };
+
+  $('#dateStart').val(formatDate(today));
+  $('#dateEnd').val(formatDate(nextMonth));
+};
+
+JsGridComponent.prototype._getFilterParams = function () {
+  if (!this.enableDateRange) return {};
+
+  const dateStart = $('#dateStart').val();
+  const dateEnd = $('#dateEnd').val();
+  return { dateStart, dateEnd };
+};
+
+JsGridComponent.prototype._bindEvents = function (onDataLoaded) {
+  const self = this;
+
+  $(document).off('click', '#btnNuevo').on('click', '#btnNuevo', function () {
+    self.navegarAModulo(0);
+  });
+
+  $(document).off('click', '#btnRecargar').on('click', '#btnRecargar', function () {
+    self.init(onDataLoaded);
+  });
+
+  $(document).off('click', '#btnExportar').on('click', '#btnExportar', function () {
+    const table = document.querySelector(`#${self.containerId} table`);
+    if (!table) return alert('Tabla no disponible para exportar');
+
+    const wb = XLSX.utils.table_to_book(table, { sheet: 'Datos' });
+    XLSX.writeFile(wb, 'export.xlsx');
+  });
+
+  if (this.enableDateRange) {
+    $(document).off('change', '#dateStart, #dateEnd').on('change', '#dateStart, #dateEnd', function () {
+      self.init(onDataLoaded);
+    });
   }
 };
 

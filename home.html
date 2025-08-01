@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>ConectoTotal</title>
+  <title>ConexionTotal</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <!-- Favicon icon -->
     <link rel="icon" href="../files/assets/images/favicon.ico" type="image/x-icon">
@@ -25,7 +25,25 @@
     <link type="text/css" rel="stylesheet" href="assets/jsgrid-1.5.3/css/theme.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <!-- Data Table Css -->
+    <link rel="stylesheet" type="text/css" href="./assets/bower_components/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="./assets/pages/data-table/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="./assets/bower_components/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="./assets/pages/data-table/extensions/responsive/css/responsive.dataTables.css">
+    <style>
+        .table-custom-header {
+            --bs-table-bg: #404E67;
+            --bs-table-striped-bg: #2c3034;
+            --bs-table-striped-color: #fff;
+            --bs-table-active-bg: #373b3e;
+            --bs-table-active-color: #fff;
+            --bs-table-hover-bg: #323539;
+            --bs-table-hover-color: #fff;
+            color: #fff;
+            border-color: #373b3e;
+        }
 
+    </style>
 </head>
 <body>
     <div class="theme-loader">
@@ -103,13 +121,30 @@
   <script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
   <script src="assets/js/script.min.js"></script>
   <script type="text/javascript" src="assets/jsgrid-1.5.3/dist/jsgrid.js"></script>
+  <!-- data-table js -->
+  <script src="assets/bower_components/datatables.net/js/jquery.dataTables.js"></script>
+  <script src="assets/bower_components/datatables.net-buttons/js/dataTables.buttons.js"></script>
+  <script src="assets/pages/data-table/js/jszip.min.js"></script>
+  <script src="assets/pages/data-table/js/pdfmake.min.js"></script>
+  <script src="assets/pages/data-table/js/vfs_fonts.js"></script>
+  <script src="assets/pages/data-table/extensions/responsive/js/dataTables.responsive.min.js"></script>
+  <script src="assets/bower_components/datatables.net-buttons/js/buttons.print.js"></script>
+  <script src="assets/bower_components/datatables.net-buttons/js/buttons.html5.js"></script>
+  <script src="assets/pages/data-table/js/dataTables.bootstrap4.min.js"></script>
+  <script src="assets/bower_components/datatables.net-responsive/js/dataTables.responsive.js"></script>
+  <script src="assets/bower_components/datatables.net-responsive-bs4/js/responsive.bootstrap4.js"></script>
   <script src="assets/js/config.js"></script>
   <script src="assets/js/API.js"></script>
   <script src="assets/js/main.js"></script>
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/jsGrid.js"></script>
+  <script src="assets/js/dataGridDT.js"></script>
   <script src="assets/js/getDataControl.js"></script>
-  <script src="assets/js/submitForm.js"></script>  
+  <script src="assets/js/submitForm.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+  
   <script>
     $(document).ready(function () {
         Auth.attachToken();
