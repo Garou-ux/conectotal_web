@@ -149,10 +149,10 @@
           <span class="pcoded-mtext">Ventas</span>
         </a>
         <ul class="pcoded-submenu">
-          <li><a href="#" data-modulo="cotizaciones">Cotizaciones</a></li>
+          <!-- <li><a href="#" data-modulo="cotizaciones">Cotizaciones</a></li> -->
           <li><a href="#" data-modulo="facturas">Facturación</a></li>
-          <li><a href="#" data-modulo="notas_credito">Notas de crédito</a></li>
-          <li><a href="#" data-modulo="cxc">Cuentas por cobrar</a></li>
+          <!-- <li><a href="#" data-modulo="notas_credito">Notas de crédito</a></li> -->
+          <!-- <li><a href="#" data-modulo="cxc">Cuentas por cobrar</a></li> -->
           <li class="pcoded-hasmenu">
             <a href="javascript:void(0)"><span class="pcoded-mtext">Catálogos</span></a>
             <ul class="pcoded-submenu">
@@ -174,15 +174,19 @@
           <span class="pcoded-mtext">Compras</span>
         </a>
         <ul class="pcoded-submenu">
+          <li><a href="#" data-modulo="requisiciones">Requisiciones</a></li>
+          <li><a href="#" data-modulo="cotizaciones_proveedores">Cotizaciones</a></li>
+          <li><a href="#" data-modulo="proyectos">Proyectos</a></li>
           <li><a href="#" data-modulo="ordenes_compra">Órdenes de compra</a></li>
-          <li><a href="#" data-modulo="facturas_proveedor">Facturas recibidas</a></li>
-          <li><a href="#" data-modulo="notas_debito">Notas de débito</a></li>
-          <li><a href="#" data-modulo="cxp">Cuentas por pagar</a></li>
+          <li><a href="#" data-modulo="facturas_proveedor">Facturas Proveedor</a></li>
+          <!-- <li><a href="#" data-modulo="notas_debito">Notas de débito</a></li> -->
+          <!-- <li><a href="#" data-modulo="cxp">Cuentas por pagar</a></li> -->
           <li><a href="#" data-modulo="gastos">Gastos</a></li>
           <li class="pcoded-hasmenu">
             <a href="javascript:void(0)"><span class="pcoded-mtext">Catálogos</span></a>
             <ul class="pcoded-submenu">
               <li><a href="#" data-modulo="proveedores">Proveedores</a></li>
+              <li><a href="#" data-modulo="productos">Productos</a></li>
               <li><a href="#" data-modulo="categorias_gasto">Categorías de gasto</a></li>
             </ul>
           </li>
@@ -191,14 +195,14 @@
     </ul>
 
     <!-- POS -->
-    <div class="pcoded-navigatio-lavel">Punto de Venta (POS)</div>
+    <!-- <div class="pcoded-navigatio-lavel">Punto de Venta (POS)</div>
     <ul class="pcoded-item pcoded-left-item">
       <li><a href="#" data-modulo="pos"><i class="feather icon-printer"></i> Punto de venta</a></li>
       <li><a href="#" data-modulo="cortes_caja">Cortes de caja</a></li>
-    </ul>
+    </ul> -->
 
     <!-- ALMACÉN -->
-    <div class="pcoded-navigatio-lavel">Almacén</div>
+    <!-- <div class="pcoded-navigatio-lavel">Almacén</div>
     <ul class="pcoded-item pcoded-left-item">
       <li><a href="#" data-modulo="almacen">Entradas/Salidas</a></li>
       <li><a href="#" data-modulo="inventario">Inventario</a></li>
@@ -211,10 +215,10 @@
           <li><a href="#" data-modulo="unidades">Unidades</a></li>
         </ul>
       </li>
-    </ul>
+    </ul> -->
 
     <!-- TRANSPORTE -->
-    <div class="pcoded-navigatio-lavel">Logística y Transportes</div>
+    <!-- <div class="pcoded-navigatio-lavel">Logística y Transportes</div>
     <ul class="pcoded-item pcoded-left-item">
       <li><a href="#" data-modulo="viajes">Viajes</a></li>
       <li><a href="#" data-modulo="cartas_porte">Cartas Porte</a></li>
@@ -228,10 +232,10 @@
           <li><a href="#" data-modulo="gps">Dispositivos GPS</a></li>
         </ul>
       </li>
-    </ul>
+    </ul> -->
 
     <!-- MANTENIMIENTO -->
-    <div class="pcoded-navigatio-lavel">Mantenimientos</div>
+    <!-- <div class="pcoded-navigatio-lavel">Mantenimientos</div>
     <ul class="pcoded-item pcoded-left-item">
       <li><a href="#" data-modulo="servicios">Servicios programados</a></li>
       <li><a href="#" data-modulo="bitacoras">Bitácora</a></li>
@@ -242,14 +246,14 @@
           <li><a href="#" data-modulo="tipos_servicio">Tipos de servicio</a></li>
         </ul>
       </li>
-    </ul>
+    </ul> -->
 
     <!-- CRM / SOPORTE -->
-    <div class="pcoded-navigatio-lavel">CRM y Soporte</div>
+    <!-- <div class="pcoded-navigatio-lavel">CRM y Soporte</div>
     <ul class="pcoded-item pcoded-left-item">
       <li><a href="#" data-modulo="tickets">Tickets</a></li>
       <li><a href="#" data-modulo="seguimiento">Seguimiento</a></li>
-    </ul>
+    </ul> -->
 
     <!-- REPORTES -->
     <div class="pcoded-navigatio-lavel">Reportes</div>
@@ -257,17 +261,31 @@
       <li><a href="#" data-modulo="reportes_ventas">Ventas</a></li>
       <li><a href="#" data-modulo="reportes_compras">Compras</a></li>
       <li><a href="#" data-modulo="reportes_gastos">Gastos</a></li>
-      <li><a href="#" data-modulo="reportes_mantenimiento">Mantenimientos</a></li>
+      <!-- <li><a href="#" data-modulo="reportes_mantenimiento">Mantenimientos</a></li> -->
+    </ul>
+
+
+    <div class="pcoded-navigatio-lavel">RH</div>
+    <ul class="pcoded-item pcoded-left-item">
+      <li class="pcoded-hasmenu">
+        <a href="javascript:void(0)">
+          <span class="pcoded-micon"><i class="feather icon-users"></i></span>
+          <span class="pcoded-mtext">RH</span>
+        </a>
+        <ul class="pcoded-submenu">
+          <li><a href="#" data-modulo="empleados">Empleados</a></li>
+        </ul>
+      </li>
     </ul>
 
     <!-- CONFIGURACIÓN -->
-    <div class="pcoded-navigatio-lavel">Configuración</div>
+    <!-- <div class="pcoded-navigatio-lavel">Configuración</div>
     <ul class="pcoded-item pcoded-left-item">
       <li><a href="#" data-modulo="usuarios">Usuarios</a></li>
       <li><a href="#" data-modulo="roles">Roles y permisos</a></li>
       <li><a href="#" data-modulo="sucursales">Sucursales</a></li>
       <li><a href="#" data-modulo="parametros">Parámetros del sistema</a></li>
-    </ul>
+    </ul> -->
 
   </div>
 </nav>

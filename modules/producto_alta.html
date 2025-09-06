@@ -1,0 +1,59 @@
+<div class="main-body">
+    <div class="page-wrapper">
+        <div class="page-header">
+            <div class="row align-items-end">
+                <div class="col-lg-8">
+                    <div class="page-header-title">
+                        <div class="d-inline">
+                            <h4>Producto <span id="titulo"></span></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-body">
+            <form id="formController">
+             <input type="hidden" id="id" name="id" value="0" />
+            <div class="col-xl-12 col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Datos Generales</h5>
+                        <div class="card-header-right">
+                            <ul class="list-unstyled card-option">
+                                <li><i class="feather minimize-card icon-minus"></i></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-block">
+                            <div class="row form-row">
+                                <div class="form-group col-sm-4">
+                                    <label for="clave">Clave:</label>
+                                    <input type="text" class="form-control form-control-sm" id="clave" name="clave">
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="descripcion">Descripcion:</label>
+                                    <input type="text" class="form-control form-control-sm" id="descripcion" name="descripcion">
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="precio">Precio:</label>
+                                    <input type="number" step="any" class="form-control form-control-sm" id="precio" name="precio">
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="col-xl 12 col-md-12">
+                <div class="card">
+                    <div class="card-block">
+                    <button type="submit" id="buttonSave" class="btn btn-primary">Guardar</button>
+                    <button type="button" id="buttonCerrar" class="btn btn-danger">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
