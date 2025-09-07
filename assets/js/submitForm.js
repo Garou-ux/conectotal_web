@@ -3,7 +3,8 @@ function submitForm({
   apiPath,
   validation = {},
   onSuccess = () => {},
-  onError = () => {}
+  onError = () => {},
+  callbackExtraParams = () => ({})
 }) {
   const $form = $(`#${formId}`);
 
@@ -27,6 +28,7 @@ function submitForm({
       }
     }
 
+    // Construir formData
     const formData = {};
     const formArray = $form.serializeArray();
 
@@ -49,6 +51,10 @@ function submitForm({
     if (id && parseInt(id) > 0) {
       formData['id'] = parseInt(id);
     }
+
+    // Combinar con parámetros extra
+    const extraParams = callbackExtraParams(formData);
+    $.extend(formData, extraParams); // Extiende formData con los extras
 
     // Enviar los datos a la API
     Api.post(apiPath, formData)

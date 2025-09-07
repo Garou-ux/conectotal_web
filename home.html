@@ -16,6 +16,7 @@
     <link rel="stylesheet" type="text/css" href="./assets/icon/icofont/css/icofont.css">
     <!-- feather Awesome -->
     <link rel="stylesheet" type="text/css" href="./assets/icon/feather/css/feather.css">
+    <link rel="stylesheet" type="text/css" href="./assets/icon/font-awesome/css/font-awesome.min.css">
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
     <link rel="stylesheet" type="text/css" href="./assets/css/jquery.mCustomScrollbar.css">
@@ -25,6 +26,8 @@
     <link type="text/css" rel="stylesheet" href="assets/jsgrid-1.5.3/css/theme.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <!-- select2 -->
+    <link rel="stylesheet" href="./assets/bower_components/select2/dist/css/select2.min.css" />
     <!-- Data Table Css -->
     <link rel="stylesheet" type="text/css" href="./assets/bower_components/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" type="text/css" href="./assets/pages/data-table/css/buttons.dataTables.min.css">
@@ -42,6 +45,14 @@
             color: #fff;
             border-color: #373b3e;
         }
+
+    .select2-container--default .select2-selection--single {
+  background-color: #fff !important;
+}
+.select2-container--default .select2-selection--multiple {
+  background-color: #fff !important;
+}
+
 
     </style>
 </head>
@@ -121,6 +132,8 @@
   <script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
   <script src="assets/js/script.min.js"></script>
   <script type="text/javascript" src="assets/jsgrid-1.5.3/dist/jsgrid.js"></script>
+  <!-- select2 -->
+  <script type="text/javascript" src="assets/bower_components/select2/dist/js/select2.full.min.js"></script>
   <!-- data-table js -->
   <script src="assets/bower_components/datatables.net/js/jquery.dataTables.js"></script>
   <script src="assets/bower_components/datatables.net-buttons/js/dataTables.buttons.js"></script>
@@ -141,6 +154,9 @@
   <script src="assets/js/dataGridDT.js"></script>
   <script src="assets/js/getDataControl.js"></script>
   <script src="assets/js/submitForm.js"></script>
+  <script src="assets/js/populateSelect.js"></script>
+  <script src="assets/js/mainFiller.js"></script>
+  <script src="assets/js/tableControl.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 

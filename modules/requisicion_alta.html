@@ -1,0 +1,106 @@
+<div class="main-body">
+    <div class="page-wrapper">
+        <div class="page-header">
+            <div class="row align-items-end">
+                <div class="col-lg-8">
+                    <div class="page-header-title">
+                        <div class="d-inline">
+                            <h4>Requisicion <span id="titulo"></span></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-body">
+            <form id="formController">
+             <input type="hidden" id="id" name="id" value="0" />
+             <input type="hidden" id="estatus_id" name="estatus_id" value="1" />
+             <input type="hidden" id="rol_id" name="rol_id" value="1" />
+            <div class="col-xl-12 col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Datos Generales</h5>
+                        <div class="card-header-right">
+                            <ul class="list-unstyled card-option">
+                                <li><i class="feather minimize-card icon-minus"></i></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-block">
+                            <div class="row form-row">
+                                <div class="form-group col-sm-4">
+                                    <label for="fecha">Fecha:</label>
+                                    <input type="date" class="form-control form-control-sm" id="fecha" name="fecha">
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="empleado_id">Solicta:</label>
+                                    <select id="empleado_id" name="empleado_id" class="form-select form-control form-control-sm"></select>
+                                </div>
+                            </div>
+                            <div class="row form-row">
+                                <div class="form-group col-sm-12">
+                                    <label for="observaciones">Observaciones:</label>
+                                    <input type="text" class="form-control form-control-sm" id="observaciones" name="observaciones">
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5>Conceptos</h5>
+                    <div class="card-header-right">
+                        <ul class="list-unstyled card-option">
+                            <li><i class="feather minimize-card icon-minus"></i></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-block">
+                    <div class="row table-responsive">
+                        <table class="table table-xs" id="tableRequisicionDetalle">
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Descripcion</th>
+                                    <th>Observacion</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="formRequisicionDetalle">
+                                    <td>
+                                        <select req id="producto_id_table" name="producto_id_table" class="form-select form-control form-control-sm"></select>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control form-control-xs" id="cantidad_table" value="1" style="text-align: right">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control form-control-xs" id="descripcion_table" >
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control form-control-sm" id="observacion_table" >
+                                    </td>
+                                    <td>
+                                        <button id="addConceptos" type="button" class="btn btn-block bg-gradient-success btn-xs"><i class="fa fa-plus"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-xl 12 col-md-12">
+                <div class="card">
+                    <div class="card-block">
+                    <button type="submit" id="buttonSave" class="btn btn-primary">Guardar</button>
+                    <button type="button" id="buttonCerrar" class="btn btn-danger">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>

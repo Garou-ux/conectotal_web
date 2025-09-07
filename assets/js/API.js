@@ -47,6 +47,7 @@ _request: function (method, path, data = null, options = {}) {
   const makeRequest = (token) => {
     const headers = {
       'Content-Type': 'application/json',
+      'Accept': 'applicacion/json',
       ...options.headers,
       Authorization: 'Bearer ' + token
     };
