@@ -1,4 +1,4 @@
-console.log('Módulo productos.js inicializado');
+console.log('Módulo clientes.js inicializado');
 
 $(document).ready(function () {
 //   var grid = new JsGridComponent(
@@ -25,12 +25,12 @@ $(document).ready(function () {
   
   const grid = new DataTableComponent(
     'res-config',
-    '/cotizacionesProveedores/getDataGridParams',
-    '/cotizacionesProveedores/getGridData',
-    'cotizacion_proveedor_alta',
+    '/proveedores/getDataGridParams',
+    '/proveedores/getGridData',
+    'proveedor_alta',
     {
-      labelNuevo: 'Nueva Cotizacion Proveedor',
-      enableDateRange: true,
+      labelNuevo: 'Nuevo Proveedor',
+      enableDateRange: false,
       headerClass: 'table-custom-header' // aquí nombras la clase
     }
   );

@@ -969,271 +969,592 @@ $.fn.extend({
         });
     },
 
+    // createCheckList(config){
+    //     let api = config.api;
+    //     let map = config.map;
+    //     let tableKey = config.key;
+    //     let conteo = (config.hasOwnProperty('conteo')) ? config.conteo : false;
+    //     let modalSize = (config.hasOwnProperty('modalSize')) ? config.modalSize : 'lg';
+    //     let modalTitle = (config.hasOwnProperty('modalTitle')) ? config.modalTitle : 'Seleccione';
+    //     let xlsfield = false;
+    //     let xlsFieldSelector = false;
+    //     if(config.hasOwnProperty('xlsfield')){
+    //         xlsfield = config.xlsfield;
+    //     }
+    //     if(config.hasOwnProperty('xlsFieldSelector')){
+    //         xlsFieldSelector = config.xlsFieldSelector;
+    //     }
+    //     let dat = {};
+    //     let max = ((config.hasOwnProperty('max')) ? config.max : 0)
+    //     let busqueda = ((config.hasOwnProperty('busqueda')) ? config.busqueda : false);
+    //     let count = 0;
+    //     if(config.hasOwnProperty('extraParams')){
+    //         dat = config.extraParams;
+    //     }
+    //     let dataObj ={};
+
+    //     let modal = $('<div>').attr({
+    //         class: "modal fade",
+    //         id: "modal-del"
+    //     });
+
+    //     let modalHtml = '<div class="modal-dialog modal-'+modalSize+'">';
+    //     modalHtml += '<div class="modal-content">';
+    //     modalHtml += '<div class="modal-header">';
+    //     modalHtml += '<h5 class="modal-title">'+modalTitle+'</h5>';
+    //     //modalHtml += '<button type="button" class="close" data-dismiss="modal" aria-label="Close">';
+    //     //modalHtml += '<span aria-hidden="true">&times;</span>';
+    //     //modalHtml += '</button>';
+    //     modalHtml += '</div>';
+    //     modalHtml += '<div class="modal-body" style="height: 500px; overflow: auto;">';
+    //     modalHtml += '<div className="row form-group col-md-12" id="filterMS">';
+    //     modalHtml += '<label for="filterMS_input" className="col-sm-2 col-form-label col-form-label-sm label-input"><i class="fas fa-search"></i>Filtro</label>';
+    //     modalHtml += '<div className="col-sm-2 p-0 mb-2"> <input type="text" className="form-control form-control-sm" id="filterMS_input"> <i style="color:red;" id="cleanFilterMSInput" title="Borrar busqueda" class="fas fa-times-circle"></i>';
+    //     if(conteo != false){
+    //         modalHtml +='<span id="conteo" style="float: right;">Total: $0.00</span>';
+    //     }
+    //     modalHtml +='</div>';
+    //     if(xlsfield != false){
+    //         modalHtml += '<label htmlFor="'+xlsfield.name+'">Archivo XLS:</label>';
+    //         modalHtml += '<input type="file" className="form-control form-control-xs" id="'+xlsfield.name+'">';
+    //     }
+    //     if(xlsFieldSelector != false){
+    //         let templateXls = `<div class="col-md-12">
+    //                             <label for="tipo_carga">
+    //                                 Tipo de carga
+    //                             </label>
+    //                             <select class="form-control form-control-xs" id="tipo_carga">
+    //                                 <option value="folio"> Folio </option>
+    //                                 <option value="timbrefiscaldigitalUUID"> UUID </option>
+    //                             </select>
+    //                             <label for="xls_file">Archivo XLS:</label>
+    //                             <input type="file" class="form-control form-control-xs" id="xls_file">
+    //                             </div>`;
+    //         modalHtml += templateXls;
+    //     }
+    //     modalHtml += '</div>';
+    //     modalHtml += '<div class="col-md-12" id="checklistTable"></div>';
+    //     modalHtml += '</div>';
+    //     modalHtml += '<div class="modal-footer justify-content-between">';
+    //     modalHtml += '<button type="button" id="btnCerrar" class="btn btn-sm btn-default" data-dismiss="modal">Cancelar</button>';
+    //     modalHtml += '<button type="button" id="btnAceptar" class="btn btn-sm btn-success" data-dismiss="modal">Aceptar</button>';
+    //     modalHtml += '</div>';
+    //     modalHtml += '</div>';
+    //     modalHtml += '</div>';
+
+    //     modal.append(modalHtml);
+    //     $('body').append(modal);
+    //     modal.modal({
+    //         backdrop: false
+    //     })
+    //     modal.modal("show");
+
+    //     modal.find("#filterMS_input").keyup(function(){
+    //         if($(this).val().toString().toLowerCase() == ''){
+    //             $("#checklistTable tr").show();
+    //             return;
+    //         }
+    //         $("#checklistTable tbody tr").hide();
+    //         $("#checklistTable tbody tr td[search*='"+$(this).val().toString().toLowerCase()+"']").closest("tr").show();
+    //     });
+
+    //     modal.find('#cleanFilterMSInput').click(function(){
+    //         modal.find('#filterMS_input').val('').keyup();
+    //     });
+
+    //     $("#btnAceptar").click(function(){
+    //         let obj = [];
+    //         let returnIds = [];
+    //         let returnObj = {};
+    //         let tableRowsCheck = $("#checklistTable").find('tbody').find('tr').find('input[type="checkbox"]:checked');
+    //         $.each(tableRowsCheck, function(){
+    //             returnIds.push(parseInt($(this).closest('tr').attr(tableKey)));
+    //         })
+    //         $.each(dataObj, function(k,v){
+    //             if($.inArray(v[tableKey], returnIds) !== -1){
+    //                 obj.push(v);
+    //             };
+    //         });
+    //         returnObj['ids'] = returnIds;
+    //         returnObj['obj'] = obj;
+    //         if(config.hasOwnProperty('callback')){
+    //             config.callback(returnObj);
+    //         }
+    //         modal.on('hidden.bs.modal', function (e) {
+    //             modal.remove();
+    //         });
+    //     });
+
+    //     $("#btnCerrar").click(function(){
+    //         modal.on('hidden.bs.modal', function (e) {
+    //             modal.remove();
+    //         });
+    //         if(config.hasOwnProperty('callbackCancel')){
+    //             config.callbackCancel();
+    //         }
+    //     });
+
+    //     function createTable(obj){
+    //         let formatArr = {};
+    //         let retorno = {};
+    //         let table = $('<table>').addClass('table table-sm table-striped');
+    //         let thead = $('<thead>');
+    //         let tr = $('<tr>');
+    //         let th = $('<th>');
+    //         tr.append(th);
+
+    //         $.each(obj, function(i,v){
+    //             let th = $('<th>').attr({
+    //                 'key': i
+    //             });
+    //             if($.isPlainObject(v)){
+    //                 formatArr[i] = {
+    //                     decimal: v.decimal
+    //                 }
+    //                 th.attr({
+    //                     'format': v.moneda,
+    //                     'decimal': v.decimal
+    //                 }).html(v.label);
+    //             }else{
+    //                 th.html(v);
+    //             }
+    //             tr.append(th);
+    //         });
+    //         thead.append(tr);
+    //         table.append(thead);
+
+    //         retorno['table'] = table;
+    //         retorno['format'] = formatArr;
+
+    //         return retorno;
+    //     }
+
+    //     function dataService(params){
+    //         Api.post(api,{}).then(response =>{
+    //             console.log(response.data)
+    //             const data = response;
+    //             let tableArr = createTable(map);
+    //                 let formatArr = tableArr.format;
+    //                 let table = tableArr.table;
+    //                 let tbody = $('<tbody>');
+    //                 let total = 0;
+    //                 $.each(data.data, function(i,v){
+    //                     let row = $('<tr>').attr(tableKey, v[tableKey]);
+    //                     row.attr('field', tableKey);
+    //                     row.attr('pos', i);
+    //                     let tdCheck = $('<td>');
+    //                     let check = $('<input>').attr({
+    //                         type: 'checkbox',
+    //                         value: tableKey
+    //                     }).addClass("form-check-input");
+    //                     check.click(function(){
+    //                         if($(this).is(':checked')){
+    //                             count++;
+    //                             if(v.hasOwnProperty('total')){
+    //                                 total+=parseFloat(v.total);
+    //                                 $('#conteo').text('Total: $'+currencyFormat(total));
+    //                             }
+    //                         }else{
+    //                             count--;
+    //                             if(v.hasOwnProperty('total')){
+    //                                 total-=parseFloat(v.total);
+    //                                 $('#conteo').text('Total: $'+currencyFormat(total));
+    //                             }
+    //                         }
+    //                         if(max != 0){
+    //                             if(count == max){
+    //                                 table.find('input[type=checkbox]:not(:checked)').attr('disabled','disabled')
+    //                             }else{
+    //                                 table.find('input[type=checkbox]:not(:checked)').removeAttr('disabled')
+    //                             }
+    //                         }
+
+    //                         if($(this).is(':checked')){
+    //                             if(busqueda != false){
+    //                                 $('#filterMS_input').val(v[busqueda]);
+    //                                 $('#filterMS_input').keyup();
+    //                                 //$('#filterMS_input').attr('disabled','disabled')
+    //                             }
+    //                         } else {
+    //                             if(count<1){
+    //                                 $('input:checkbox').prop('checked');
+    //                                 $('#filterMS_input').val('');
+    //                                 $('#filterMS_input').keyup();
+    //                                 //$('#filterMS_input').removeAttr('disabled');
+    //                             }
+    //                         }
+    //                     });
+    //                     tdCheck.append(check);
+    //                     row.append(tdCheck);
+    //                     $.each(map, function(k,h){
+    //                         let cel = $('<td>');
+    //                         if((v[k]) != null){
+    //                             cel.attr({
+    //                                 'search': (v[k]).toString().toLowerCase()
+    //                             });
+    //                         }
+    //                         if(formatArr.hasOwnProperty(k)){
+    //                             cel.css({
+    //                                 'text-align': 'right'
+    //                             });
+    //                             cel.html('$ '+currencyFormat(v[k]));
+    //                         }else{
+    //                             cel.html(v[k]);
+    //                         }
+    //                         row.append(cel);
+    //                     });
+    //                     tbody.append(row);
+    //                 });
+    //                 table.append(tbody);
+    //                 $("#checklistTable").append(table);
+
+    //                 if(params.hasOwnProperty('callback')){
+    //                     params.callback(data.data);
+    //                 }
+
+    //                 $("#"+xlsfield.name).change(function(){
+    //                     xlsfield.callback(data.data,xlsfield);
+    //                 })
+    //                 $("#"+xlsFieldSelector.name).change(function(){
+    //                     xlsFieldSelector.callback(data.data,xlsfield);
+    //                 })
+    //         });
+    //             // .done(function( data, textStatus, jqXHR  ) {
+    //             //     let tableArr = createTable(map);
+    //             //     let formatArr = tableArr.format;
+    //             //     let table = tableArr.table;
+    //             //     let tbody = $('<tbody>');
+    //             //     let total = 0;
+    //             //     $.each(data.data, function(i,v){
+    //             //         let row = $('<tr>').attr(tableKey, v[tableKey]);
+    //             //         row.attr('field', tableKey);
+    //             //         row.attr('pos', i);
+    //             //         let tdCheck = $('<td>');
+    //             //         let check = $('<input>').attr({
+    //             //             type: 'checkbox',
+    //             //             value: tableKey
+    //             //         }).addClass("form-check-input");
+    //             //         check.click(function(){
+    //             //             if($(this).is(':checked')){
+    //             //                 count++;
+    //             //                 if(v.hasOwnProperty('total')){
+    //             //                     total+=parseFloat(v.total);
+    //             //                     $('#conteo').text('Total: $'+currencyFormat(total));
+    //             //                 }
+    //             //             }else{
+    //             //                 count--;
+    //             //                 if(v.hasOwnProperty('total')){
+    //             //                     total-=parseFloat(v.total);
+    //             //                     $('#conteo').text('Total: $'+currencyFormat(total));
+    //             //                 }
+    //             //             }
+    //             //             if(max != 0){
+    //             //                 if(count == max){
+    //             //                     table.find('input[type=checkbox]:not(:checked)').attr('disabled','disabled')
+    //             //                 }else{
+    //             //                     table.find('input[type=checkbox]:not(:checked)').removeAttr('disabled')
+    //             //                 }
+    //             //             }
+
+    //             //             if($(this).is(':checked')){
+    //             //                 if(busqueda != false){
+    //             //                     $('#filterMS_input').val(v[busqueda]);
+    //             //                     $('#filterMS_input').keyup();
+    //             //                     //$('#filterMS_input').attr('disabled','disabled')
+    //             //                 }
+    //             //             } else {
+    //             //                 if(count<1){
+    //             //                     $('input:checkbox').prop('checked');
+    //             //                     $('#filterMS_input').val('');
+    //             //                     $('#filterMS_input').keyup();
+    //             //                     //$('#filterMS_input').removeAttr('disabled');
+    //             //                 }
+    //             //             }
+    //             //         });
+    //             //         tdCheck.append(check);
+    //             //         row.append(tdCheck);
+    //             //         $.each(map, function(k,h){
+    //             //             let cel = $('<td>');
+    //             //             if((v[k]) != null){
+    //             //                 cel.attr({
+    //             //                     'search': (v[k]).toString().toLowerCase()
+    //             //                 });
+    //             //             }
+    //             //             if(formatArr.hasOwnProperty(k)){
+    //             //                 cel.css({
+    //             //                     'text-align': 'right'
+    //             //                 });
+    //             //                 cel.html('$ '+currencyFormat(v[k]));
+    //             //             }else{
+    //             //                 cel.html(v[k]);
+    //             //             }
+    //             //             row.append(cel);
+    //             //         });
+    //             //         tbody.append(row);
+    //             //     });
+    //             //     table.append(tbody);
+    //             //     $("#checklistTable").append(table);
+
+    //             //     if(params.hasOwnProperty('callback')){
+    //             //         params.callback(data.data);
+    //             //     }
+
+    //             //     $("#"+xlsfield.name).change(function(){
+    //             //         xlsfield.callback(data.data,xlsfield);
+    //             //     })
+    //             //     $("#"+xlsFieldSelector.name).change(function(){
+    //             //         xlsFieldSelector.callback(data.data,xlsfield);
+    //             //     })
+    //             // })
+    //             // .fail(function( jqXHR, textStatus, errorThrown ){
+    //             //     // toastr.error("Ocurrio un error al obtener los datos");
+    //             //     //alert((JSON.parse(jqXHR.responseText)).message);
+    //             // })
+    //     }
+
+    //     dataService({
+    //         callback: function(obj){
+    //             dataObj = obj;
+    //         }
+    //     });
+    // },
+
     createCheckList(config){
-        let api = config.api;
-        let map = config.map;
-        let tableKey = config.key;
-        let conteo = (config.hasOwnProperty('conteo')) ? config.conteo : false;
-        let modalSize = (config.hasOwnProperty('modalSize')) ? config.modalSize : 'lg';
-        let modalTitle = (config.hasOwnProperty('modalTitle')) ? config.modalTitle : 'Seleccione';
-        let xlsfield = false;
-        let xlsFieldSelector = false;
-        if(config.hasOwnProperty('xlsfield')){
-            xlsfield = config.xlsfield;
-        }
-        if(config.hasOwnProperty('xlsFieldSelector')){
-            xlsFieldSelector = config.xlsFieldSelector;
-        }
-        let dat = {};
-        let max = ((config.hasOwnProperty('max')) ? config.max : 0)
-        let busqueda = ((config.hasOwnProperty('busqueda')) ? config.busqueda : false);
-        let count = 0;
-        if(config.hasOwnProperty('extraParams')){
-            dat = config.extraParams;
-        }
-        let dataObj ={};
+    let api = config.api;
+    let map = config.map;
+    let tableKey = config.key;
+    let conteo = config.hasOwnProperty('conteo') ? config.conteo : false;
+    let modalSize = config.hasOwnProperty('modalSize') ? config.modalSize : 'lg';
+    let modalTitle = config.hasOwnProperty('modalTitle') ? config.modalTitle : 'Seleccione';
+    let xlsfield = config.hasOwnProperty('xlsfield') ? config.xlsfield : false;
+    let xlsFieldSelector = config.hasOwnProperty('xlsFieldSelector') ? config.xlsFieldSelector : false;
+    let dat = config.hasOwnProperty('extraParams') ? config.extraParams : {};
+    let max = config.hasOwnProperty('max') ? config.max : 0;
+    let busqueda = config.hasOwnProperty('busqueda') ? config.busqueda : false;
+    let count = 0;
+    let dataObj = {};
 
-        let modal = $('<div>').attr({
-            class: "modal fade",
-            id: "modal-del"
-        });
+    // Crear modal
+    let modal = $('<div>').attr({
+        class: "modal fade",
+        id: "modal-del",
+        tabindex: "-1",
+        role: "dialog",
+        "aria-hidden": "true"
+    });
 
-        let modalHtml = '<div class="modal-dialog modal-'+modalSize+'">';
-        modalHtml += '<div class="modal-content">';
-        modalHtml += '<div class="modal-header">';
-        modalHtml += '<h5 class="modal-title">'+modalTitle+'</h5>';
-        //modalHtml += '<button type="button" class="close" data-dismiss="modal" aria-label="Close">';
-        //modalHtml += '<span aria-hidden="true">&times;</span>';
-        //modalHtml += '</button>';
-        modalHtml += '</div>';
-        modalHtml += '<div class="modal-body" style="height: 500px; overflow: auto;">';
-        modalHtml += '<div className="row form-group col-md-12" id="filterMS">';
-        modalHtml += '<label for="filterMS_input" className="col-sm-2 col-form-label col-form-label-sm label-input"><i class="fas fa-search"></i>Filtro</label>';
-        modalHtml += '<div className="col-sm-2 p-0 mb-2"> <input type="text" className="form-control form-control-sm" id="filterMS_input"> <i style="color:red;" id="cleanFilterMSInput" title="Borrar busqueda" class="fas fa-times-circle"></i>';
-        if(conteo != false){
-            modalHtml +='<span id="conteo" style="float: right;">Total: $0.00</span>';
-        }
-        modalHtml +='</div>';
-        if(xlsfield != false){
-            modalHtml += '<label htmlFor="'+xlsfield.name+'">Archivo XLS:</label>';
-            modalHtml += '<input type="file" className="form-control form-control-xs" id="'+xlsfield.name+'">';
-        }
-        if(xlsFieldSelector != false){
-            let templateXls = `<div class="col-md-12">
-                                <label for="tipo_carga">
-                                    Tipo de carga
-                                </label>
+    let modalHtml = '<div class="modal-dialog modal-'+modalSize+'">';
+    modalHtml += '<div class="modal-content">';
+    modalHtml += '<div class="modal-header">';
+    modalHtml += '<h5 class="modal-title">'+modalTitle+'</h5>';
+    modalHtml += '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>';
+    modalHtml += '</div>';
+
+    modalHtml += '<div class="modal-body" style="height: 500px; overflow: auto;">';
+    modalHtml += '<div class="row form-group col-md-12" id="filterMS">';
+    modalHtml += '<label for="filterMS_input" class="col-sm-2 col-form-label col-form-label-sm label-input"><i class="fa-solid fa-search"></i> Filtro</label>';
+    modalHtml += '<div class="col-sm-2 p-0 mb-2">';
+    modalHtml += '<input type="text" class="form-control form-control-sm" id="filterMS_input"> ';
+    modalHtml += '<i style="color:red; cursor:pointer;" id="cleanFilterMSInput" title="Borrar busqueda" class="fa-solid fa-times-circle"></i>';
+    if(conteo){
+        modalHtml += '<span id="conteo" style="float: right;">Total: $0.00</span>';
+    }
+    modalHtml += '</div>';
+
+    if(xlsfield){
+        modalHtml += '<label for="'+xlsfield.name+'">Archivo XLS:</label>';
+        modalHtml += '<input type="file" class="form-control form-control-xs" id="'+xlsfield.name+'">';
+    }
+
+    if(xlsFieldSelector){
+        let templateXls = `<div class="col-md-12">
+                                <label for="tipo_carga">Tipo de carga</label>
                                 <select class="form-control form-control-xs" id="tipo_carga">
                                     <option value="folio"> Folio </option>
                                     <option value="timbrefiscaldigitalUUID"> UUID </option>
                                 </select>
                                 <label for="xls_file">Archivo XLS:</label>
                                 <input type="file" class="form-control form-control-xs" id="xls_file">
-                                </div>`;
-            modalHtml += templateXls;
+                            </div>`;
+        modalHtml += templateXls;
+    }
+
+    modalHtml += '</div>'; // cierre filterMS
+    modalHtml += '<div class="col-md-12" id="checklistTable"></div>';
+    modalHtml += '</div>'; // cierre modal-body
+
+    modalHtml += '<div class="modal-footer justify-content-between">';
+    modalHtml += '<button type="button" id="btnCerrar" class="btn btn-sm btn-secondary">Cancelar</button>';
+    modalHtml += '<button type="button" id="btnAceptar" class="btn btn-sm btn-success">Aceptar</button>';
+    modalHtml += '</div>'; // cierre modal-footer
+    modalHtml += '</div>'; // cierre modal-content
+    modalHtml += '</div>'; // cierre modal-dialog
+
+    modal.append(modalHtml);
+    $('body').append(modal);
+
+    modal.modal({
+        backdrop: false
+    });
+
+    modal.modal("show");
+
+    // Eliminar modal al cerrar
+    modal.on('hidden.bs.modal', function () {
+        modal.remove();
+    });
+
+    // Filtro
+    modal.find("#filterMS_input").keyup(function(){
+        let val = $(this).val().toString().toLowerCase();
+        if(val === ''){
+            $("#checklistTable tr").show();
+            return;
         }
-        modalHtml += '</div>';
-        modalHtml += '<div class="col-md-12" id="checklistTable"></div>';
-        modalHtml += '</div>';
-        modalHtml += '<div class="modal-footer justify-content-between">';
-        modalHtml += '<button type="button" id="btnCerrar" class="btn btn-sm btn-default" data-dismiss="modal">Cancelar</button>';
-        modalHtml += '<button type="button" id="btnAceptar" class="btn btn-sm btn-success" data-dismiss="modal">Aceptar</button>';
-        modalHtml += '</div>';
-        modalHtml += '</div>';
-        modalHtml += '</div>';
+        $("#checklistTable tbody tr").hide();
+        $("#checklistTable tbody tr td[search*='"+val+"']").closest("tr").show();
+    });
 
-        modal.append(modalHtml);
-        $('body').append(modal);
-        modal.modal({
-            backdrop: false
-        })
-        modal.modal("show");
+    modal.find('#cleanFilterMSInput').click(function(){
+        modal.find('#filterMS_input').val('').keyup();
+    });
 
-        modal.find("#filterMS_input").keyup(function(){
-            if($(this).val().toString().toLowerCase() == ''){
-                $("#checklistTable tr").show();
-                return;
+    // Botones
+    $("#btnAceptar").click(function(){
+        let obj = [];
+        let returnIds = [];
+        let returnObj = {};
+        let tableRowsCheck = $("#checklistTable").find('tbody').find('tr').find('input[type="checkbox"]:checked');
+        $.each(tableRowsCheck, function(){
+            returnIds.push(parseInt($(this).closest('tr').attr(tableKey)));
+        });
+        $.each(dataObj, function(k,v){
+            if($.inArray(v[tableKey], returnIds) !== -1){
+                obj.push(v);
+            };
+        });
+        returnObj['ids'] = returnIds;
+        returnObj['obj'] = obj;
+        if(config.hasOwnProperty('callback')){
+            config.callback(returnObj);
+        }
+        modal.modal('hide');
+    });
+
+    $("#btnCerrar").click(function(){
+        if(config.hasOwnProperty('callbackCancel')){
+            config.callbackCancel();
+        }
+        modal.modal('hide');
+    });
+
+    // Crear tabla
+    function createTable(obj){
+        let formatArr = {};
+        let retorno = {};
+        let table = $('<table>').addClass('table table-sm table-striped');
+        let thead = $('<thead>');
+        let tr = $('<tr>');
+        tr.append('<th></th>'); // checkbox column
+        $.each(obj, function(i,v){
+            let th = $('<th>').attr('key', i);
+            if($.isPlainObject(v)){
+                formatArr[i] = {decimal: v.decimal};
+                th.attr({'format': v.moneda, 'decimal': v.decimal}).html(v.label);
+            } else {
+                th.html(v);
             }
-            $("#checklistTable tbody tr").hide();
-            $("#checklistTable tbody tr td[search*='"+$(this).val().toString().toLowerCase()+"']").closest("tr").show();
-        });
-
-        modal.find('#cleanFilterMSInput').click(function(){
-            modal.find('#filterMS_input').val('').keyup();
-        });
-
-        $("#btnAceptar").click(function(){
-            let obj = [];
-            let returnIds = [];
-            let returnObj = {};
-            let tableRowsCheck = $("#checklistTable").find('tbody').find('tr').find('input[type="checkbox"]:checked');
-            $.each(tableRowsCheck, function(){
-                returnIds.push(parseInt($(this).closest('tr').attr(tableKey)));
-            })
-            $.each(dataObj, function(k,v){
-                if($.inArray(v[tableKey], returnIds) !== -1){
-                    obj.push(v);
-                };
-            });
-            returnObj['ids'] = returnIds;
-            returnObj['obj'] = obj;
-            if(config.hasOwnProperty('callback')){
-                config.callback(returnObj);
-            }
-            modal.on('hidden.bs.modal', function (e) {
-                modal.remove();
-            });
-        });
-
-        $("#btnCerrar").click(function(){
-            modal.on('hidden.bs.modal', function (e) {
-                modal.remove();
-            });
-            if(config.hasOwnProperty('callbackCancel')){
-                config.callbackCancel();
-            }
-        });
-
-        function createTable(obj){
-            let formatArr = {};
-            let retorno = {};
-            let table = $('<table>').addClass('table table-sm table-striped');
-            let thead = $('<thead>');
-            let tr = $('<tr>');
-            let th = $('<th>');
             tr.append(th);
-
-            $.each(obj, function(i,v){
-                let th = $('<th>').attr({
-                    'key': i
-                });
-                if($.isPlainObject(v)){
-                    formatArr[i] = {
-                        decimal: v.decimal
-                    }
-                    th.attr({
-                        'format': v.moneda,
-                        'decimal': v.decimal
-                    }).html(v.label);
-                }else{
-                    th.html(v);
-                }
-                tr.append(th);
-            });
-            thead.append(tr);
-            table.append(thead);
-
-            retorno['table'] = table;
-            retorno['format'] = formatArr;
-
-            return retorno;
-        }
-
-        function dataService(params){
-            $.ajax({
-                method: "POST",
-                url: $(this).getBaseUrl()+api,
-                data: dat
-            })
-                .done(function( data, textStatus, jqXHR  ) {
-                    let tableArr = createTable(map);
-                    let formatArr = tableArr.format;
-                    let table = tableArr.table;
-                    let tbody = $('<tbody>');
-                    let total = 0;
-                    $.each(data.data, function(i,v){
-                        let row = $('<tr>').attr(tableKey, v[tableKey]);
-                        row.attr('field', tableKey);
-                        row.attr('pos', i);
-                        let tdCheck = $('<td>');
-                        let check = $('<input>').attr({
-                            type: 'checkbox',
-                            value: tableKey
-                        }).addClass("form-check-input");
-                        check.click(function(){
-                            if($(this).is(':checked')){
-                                count++;
-                                if(v.hasOwnProperty('total')){
-                                    total+=parseFloat(v.total);
-                                    $('#conteo').text('Total: $'+currencyFormat(total));
-                                }
-                            }else{
-                                count--;
-                                if(v.hasOwnProperty('total')){
-                                    total-=parseFloat(v.total);
-                                    $('#conteo').text('Total: $'+currencyFormat(total));
-                                }
-                            }
-                            if(max != 0){
-                                if(count == max){
-                                    table.find('input[type=checkbox]:not(:checked)').attr('disabled','disabled')
-                                }else{
-                                    table.find('input[type=checkbox]:not(:checked)').removeAttr('disabled')
-                                }
-                            }
-
-                            if($(this).is(':checked')){
-                                if(busqueda != false){
-                                    $('#filterMS_input').val(v[busqueda]);
-                                    $('#filterMS_input').keyup();
-                                    //$('#filterMS_input').attr('disabled','disabled')
-                                }
-                            } else {
-                                if(count<1){
-                                    $('input:checkbox').prop('checked');
-                                    $('#filterMS_input').val('');
-                                    $('#filterMS_input').keyup();
-                                    //$('#filterMS_input').removeAttr('disabled');
-                                }
-                            }
-                        });
-                        tdCheck.append(check);
-                        row.append(tdCheck);
-                        $.each(map, function(k,h){
-                            let cel = $('<td>');
-                            if((v[k]) != null){
-                                cel.attr({
-                                    'search': (v[k]).toString().toLowerCase()
-                                });
-                            }
-                            if(formatArr.hasOwnProperty(k)){
-                                cel.css({
-                                    'text-align': 'right'
-                                });
-                                cel.html('$ '+currencyFormat(v[k]));
-                            }else{
-                                cel.html(v[k]);
-                            }
-                            row.append(cel);
-                        });
-                        tbody.append(row);
-                    });
-                    table.append(tbody);
-                    $("#checklistTable").append(table);
-
-                    if(params.hasOwnProperty('callback')){
-                        params.callback(data.data);
-                    }
-
-                    $("#"+xlsfield.name).change(function(){
-                        xlsfield.callback(data.data,xlsfield);
-                    })
-                    $("#"+xlsFieldSelector.name).change(function(){
-                        xlsFieldSelector.callback(data.data,xlsfield);
-                    })
-                })
-                .fail(function( jqXHR, textStatus, errorThrown ){
-                    toastr.error("Ocurrio un error al obtener los datos");
-                    //alert((JSON.parse(jqXHR.responseText)).message);
-                })
-        }
-
-        dataService({
-            callback: function(obj){
-                dataObj = obj;
-            }
         });
-    },
+        thead.append(tr);
+        table.append(thead);
+        retorno['table'] = table;
+        retorno['format'] = formatArr;
+        return retorno;
+    }
+
+    // Servicio de datos
+    function dataService(params){
+        Api.post(api, dat).then(response =>{
+            const data = response;
+            let tableArr = createTable(map);
+            let formatArr = tableArr.format;
+            let table = tableArr.table;
+            let tbody = $('<tbody>');
+            let total = 0;
+
+            $.each(data.data, function(i,v){
+                let row = $('<tr>').attr(tableKey, v[tableKey]).attr('field', tableKey).attr('pos', i);
+                let tdCheck = $('<td>');
+                let check = $('<input type="checkbox" class="form-check-input">');
+                check.click(function(){
+                    if($(this).is(':checked')){
+                        count++;
+                        if(v.hasOwnProperty('total')){
+                            total+=parseFloat(v.total);
+                            $('#conteo').text('Total: $'+currencyFormat(total));
+                        }
+                    } else {
+                        count--;
+                        if(v.hasOwnProperty('total')){
+                            total-=parseFloat(v.total);
+                            $('#conteo').text('Total: $'+currencyFormat(total));
+                        }
+                    }
+                    if(max != 0){
+                        if(count == max){
+                            table.find('input[type=checkbox]:not(:checked)').attr('disabled','disabled');
+                        } else {
+                            table.find('input[type=checkbox]:not(:checked)').removeAttr('disabled');
+                        }
+                    }
+                });
+                tdCheck.append(check);
+                row.append(tdCheck);
+
+                $.each(map, function(k,h){
+                    let cel = $('<td>');
+                    if(v[k] != null){
+                        cel.attr('search', v[k].toString().toLowerCase());
+                    }
+                    if(formatArr.hasOwnProperty(k)){
+                        cel.css('text-align','right').html('$ '+currencyFormat(v[k]));
+                    } else {
+                        cel.html(v[k]);
+                    }
+                    row.append(cel);
+                });
+                tbody.append(row);
+            });
+
+            table.append(tbody);
+            $("#checklistTable").append(table);
+
+            if(params.hasOwnProperty('callback')){
+                params.callback(data.data);
+            }
+
+            if(xlsfield){
+                $("#"+xlsfield.name).change(function(){
+                    xlsfield.callback(data.data, xlsfield);
+                });
+            }
+            if(xlsFieldSelector){
+                $("#"+xlsFieldSelector.name).change(function(){
+                    xlsFieldSelector.callback(data.data, xlsFieldSelector);
+                });
+            }
+
+        }).catch(err => console.error(err));
+    }
+
+    dataService({
+        callback: function(obj){
+            dataObj = obj;
+        }
+    });
+},
+
 
     rowSuma(params){
         let obj = params.obj;
@@ -1729,7 +2050,7 @@ tableControl.prototype.editRow = function(elem){
         self.callback(self.tableObj, self.summary_array);
         //self.form.find("td:last-child div[role='group']").show();
     }else{
-        toastr.error('Concepto en Edicion.');
+        // toastr.error('Concepto en Edicion.');
     }
 }
 
@@ -1769,7 +2090,7 @@ tableControl.prototype.buildRow = function(r, objRow, own){
             self.callback(self.tableObj, self.summary_array);
             //self.form.find("td:last-child div[role='group']").show();
         }else{
-            toastr.error('Concepto en Edicion.');
+            // toastr.error('Concepto en Edicion.');
         }
 
         /*if(params.config.hasOwnProperty('editCallback')){
@@ -1905,7 +2226,7 @@ tableControl.prototype.buildRow = function(r, objRow, own){
             modal.modal('hide');
         });
     } else {
-        toastr.error('Concepto en Edicion.');
+        // toastr.error('Concepto en Edicion.');
     }
 }
 

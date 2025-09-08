@@ -1,28 +1,22 @@
 $(document).ready(function () {
-    getDataControl('/clientes/getData', function (data) {
-        const titulo = data ? 'Editar Cliente' : 'Nuevo Cliente';
+    getDataControl('/proveedores/getData', function (data) {
+        const titulo = data ? 'Editar Proveedor' : 'Nuevo Proveedor';
         $('#titulo').text(titulo);
-        console.log(data)
-
         MainFiller.fill(data.data.data);
     });
 
     submitForm({
         formId: 'formController',
-        apiPath: '/clientes/setData',
+        apiPath: '/proveedores/setData',
         validation: {
             nombre: {
                 label: 'Se requiere el nombre',
                 eval: "value.trim().length > 0"
             },
-            email: {
-                label: 'Correo inválido',
-                eval: "/^[^@]+@[^@]+\\.[a-z]{2,}$/.test(value)"
-            }
         },
         onSuccess: () => {
             alert('Guardado correctamente');
-            ERP.navegarAModulo('clientes');
+            ERP.navegarAModulo('proveedores');
         },
         onError: (err) => {
             console.error('Error al guardar:', err);
@@ -33,7 +27,7 @@ $(document).ready(function () {
     ERP.controlesDiv();
 
     $('#buttonCerrar').click(function(){
-        ERP.navegarAModulo('clientes');
+        ERP.navegarAModulo('proveedores');
     })
 
 });

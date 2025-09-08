@@ -16,7 +16,7 @@ $(document).ready(function () {
             }
         });
 
-        $("#empleado_id ").populateSelect({
+        $("#empleado_id").populateSelect({
             obj: data.data.data.empleados,
             map: { value: "id", text: ["descripcion"] },
             empty: true,
@@ -75,10 +75,5 @@ $(document).ready(function () {
     $('#buttonCerrar').click(function(){
         ERP.navegarAModulo('requisiciones');
     });
-
-    // const select2Rendered = document.querySelector(".select2-selection__rendered");
-    // if (select2Rendered) {
-    //     select2Rendered.style.backgroundColor = "#fff"; // tu color aquí
-    // }
 
 });

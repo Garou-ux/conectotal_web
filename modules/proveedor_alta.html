@@ -1,0 +1,147 @@
+<div class="main-body">
+    <div class="page-wrapper">
+        <div class="page-header">
+            <div class="row align-items-end">
+                <div class="col-lg-8">
+                    <div class="page-header-title">
+                        <div class="d-inline">
+                            <h4>Proveedor <span id="titulo"></span></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-body">
+            <form id="formController">
+             <input type="hidden" id="id" name="id" value="0" />
+            <div class="col-xl-12 col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Datos Generales</h5>
+                        <div class="card-header-right">
+                            <ul class="list-unstyled card-option">
+                                <li><i class="feather minimize-card icon-minus"></i></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-block">
+                            <div class="row form-row">
+                                <div class="form-group col-sm-4">
+                                    <label for="razon_social">Razon Social:</label>
+                                    <input type="text" class="form-control form-control-sm" id="razon_social" name="razon_social">
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="rfc">RFC:</label>
+                                    <input type="text" class="form-control form-control-sm" id="rfc" name="rfc">
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="regimen_fiscal">Regimen Fiscal:</label>
+                                    <input type="text" class="form-control form-control-sm" id="regimen_fiscal" name="regimen_fiscal">
+                                </div>
+                            </div>
+                            <div class="row form-row">
+                                <div class="form-group col-sm-6">
+                                    <label for="nombre">Nombre:</label>
+                                    <input type="text" class="form-control form-control-sm" id="nombre" name="nombre">
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label>Email:</label>
+                                    <input type="email" class="form-control form-control-sm" id="email" name="email">
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-12 col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Condiciones de Crédito y Facturación</h5>
+                        <div class="card-header-right">
+                            <ul class="list-unstyled card-option">
+                                <li><i class="feather minimize-card icon-minus"></i></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-block">
+                        <div class="row form-row">
+                            <div class="form-group col-sm-4">
+                                <label for="limite_credito">Limite de Credito:</label>
+                                <input type="text" class="form-control form-control-sm" id="limite_credito" name="limite_credito">
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label for="dias_credito">Dias de Credito:</label>
+                                <input type="text" class="form-control form-control-sm" id="dias_credito" name="dias_credito">
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label for="forma_pago">Forma de Pago:</label>
+                                <input type="text" class="form-control form-control-sm" id="forma_pago" name="forma_pago">
+                            </div>
+                        </div>
+                        <div class="row form-row">
+                            <div class="form-group col-sm-4">
+                                <label for="metodo_pago">Metodo de Pago:</label>
+                                <input type="text" class="form-control form-control-sm" id="metodo_pago" name="metodo_pago">
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label for="satcat_uso_cfdi_clave">Uso de CFDI:</label>
+                                <input type="text" class="form-control form-control-sm" id="satcat_uso_cfdi_clave" name="satcat_uso_cfdi_clave">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-12 col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Direccion</h5>
+                        <div class="card-header-right">
+                            <ul class="list-unstyled card-option">
+                                <li><i class="feather minimize-card icon-minus"></i></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-block">
+                            <div class="row form-row">
+                                <div class="form-group col-sm-6">
+                                    <label for="calle">Calle:</label>
+                                    <input type="text" class="form-control form-control-sm" id="calle" name="calle">
+                                </div>
+                                <div class="form-group col-sm-3">
+                                    <label>Núm Ext:</label>
+                                    <input type="text" class="form-control form-control-sm" id="numero_exterior" name="numero_exterior">
+                                </div>
+                                <div class="form-group col-sm-3">
+                                    <label>Núm Int:</label>
+                                    <input type="text" class="form-control form-control-sm" id="numero_interior" name="numero_interior">
+                                </div>
+                            </div>
+                            <div class="row form-row">
+                                <div class="form-group col-sm-4">
+                                    <label for="satcat_paises_clave">Pais:</label>
+                                    <input type="text" class="form-control form-control-sm" id="satcat_paises_clave" name="satcat_paises_clave">
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label>Codigo Postal:</label>
+                                    <input type="text" class="form-control form-control-sm" id="satcat_codigos_postales_codigo_postal" name="satcat_codigos_postales_codigo_postal">
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="satcat_estados_clave">Estado:</label>
+                                    <input type="text" class="form-control form-control-sm" id="satcat_estados_clave" name="satcat_estados_clave">
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl 12 col-md-12">
+                <div class="card">
+                    <div class="card-block">
+                    <button type="submit" id="buttonSave" class="btn btn-primary">Guardar</button>
+                    <button type="button" id="buttonCerrar" class="btn btn-danger">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
