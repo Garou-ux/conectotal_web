@@ -1,9 +1,8 @@
 var tableConceptos;
-var gastos_viaje = $("#requisiciones");
 
 $(document).ready(function () {
-    getDataControl('/cotizacionesProveedores/getData', function (data) {
-        const titulo = data ? 'Editar Requisicion' : 'Nueva Requisicion';
+    getDataControl('/proyectos/getData', function (data) {
+        const titulo = data ? 'Editar Proyecto' : 'Nuevo Proyecto';
         $('#titulo').text(titulo);
         console.log(data.data.data.productos)
         $("#producto_id_table").populateSelect({
@@ -71,15 +70,11 @@ $(document).ready(function () {
         
         MainFiller.fill(data.data.data.data);
 
-        if(data.data.data.data.estatus_id === 1){
-            $('#buttonConvertProyecto').show();
-        }
-
     });
 
     submitForm({
         formId: 'formController',
-        apiPath: '/cotizacionesProveedores/setData',
+        apiPath: '/proyectos/setData',
         validation: {
         },
         callbackExtraParams: function(formData) {
@@ -89,7 +84,7 @@ $(document).ready(function () {
         },
         onSuccess: () => {
             alert('Guardado correctamente');
-            ERP.navegarAModulo('cotizaciones_proveedores');
+            ERP.navegarAModulo('proyectos');
         },
         onError: (err) => {
             console.error('Error al guardar:', err);
@@ -100,7 +95,7 @@ $(document).ready(function () {
     ERP.controlesDiv();
 
     $('#buttonCerrar').click(function(){
-        ERP.navegarAModulo('cotizaciones_proveedores');
+        ERP.navegarAModulo('proyectos');
     });
 
     function recalcularFila(input) {
@@ -160,46 +155,9 @@ $(document).ready(function () {
     });
     }
 
-    // asignar eventos a todos los inputs editables
     document.querySelectorAll(".formDetalles").forEach(tr => {
     tr.querySelectorAll(".cantidad_table, .valor_unitario_table, .importe_table, .descuento_table")
         .forEach(input => input.addEventListener("blur", e => recalcularFila(e.target)));
     });
-
-    gastos_viaje.click(function() {
-        if($(this).prop( "checked")){
-            //gastosenc.show();
-            $(this).createCheckList({
-                api: '/requisiciones/getRequisicionesForCotizacion',
-                map: {
-                    'requisicion_id': '# Requisicion',
-                    'fecha': 'Fecha requisicion',
-                    'producto_id': 'Producto',
-                    'cantidad': 'Cantidad Solicitada',
-                    'descripcion': 'Descripcion',
-                    'observacion': 'Observaciones',
-                },
-                key: 'requisicion_id',
-                callback: function(obj){
-                    console.log(obj);
-                    tableConceptos.tableObj = obj.obj;
-                    tableConceptos.redraw();
-                }
-            });
-        }else{
-            //gastosenc.hide();
-        }
-    });
-
-    $('#buttonConvertProyecto').click(function(e){
-        e.preventDefault();
-        const id = $('#id').val();
-        Api.post('/cotizacionesProveedores/convertCotizacionToProyecto',{id: id} ).then(response =>{
-            const data = response;
-            console.log(data)
-        }).catch(err => console.error(err));
-
-    })
-
 
 });

@@ -16,32 +16,7 @@ const Api = {
     return this._request('DELETE', path, data, options);
   },
 
-//   _request: function (method, path, data = null, options = {}) {
-//     const token = Auth.getToken();
-//     const headers = {
-//       'Content-Type': 'application/json',
-//       ...options.headers,
-//     };
 
-//     if (token) {
-//       headers['Authorization'] = 'Bearer ' + token;
-//     }
-
-//     return $.ajax({
-//       url: Config.getBaseApiUrl() + path,
-//       method,
-//       headers,
-//       data: data ? JSON.stringify(data) : undefined
-//     }).catch(xhr => {
-//       // Centralizado: log, alert o redirección si 401
-//       if (xhr.status === 401) {
-//         alert('Sesión expirada. Inicia sesión de nuevo.');
-//         Auth.logout(); // limpia y redirige
-//       }
-
-//       throw xhr; // para que el .catch() de quien lo llame lo maneje también
-//     });
-//   }
 
 _request: function (method, path, data = null, options = {}) {
   const makeRequest = (token) => {
