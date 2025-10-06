@@ -157,6 +157,7 @@
   <script src="assets/js/populateSelect.js"></script>
   <script src="assets/js/mainFiller.js"></script>
   <script src="assets/js/tableControl.js"></script>
+  <script src="assets/js/autoCompleteComponent.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
@@ -171,6 +172,9 @@
         $('#logoutBtn').on('click', function () {
           Auth.logout();
         });
+        console.log(Auth.getUser())
+        let nameUser = Auth.getUser().name;
+        $('#userNameSpan').text(nameUser)
     });
   </script>
 </body>

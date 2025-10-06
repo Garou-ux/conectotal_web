@@ -16,6 +16,19 @@ $(document).ready(function () {
             }
         });
 
+        $("#producto_clave_table").setAutoComplete({
+            api: "/productos/getProductsSearch",   // tu endpoint
+            target: "producto",
+            valueField: "producto_id",  // campo que trae el ID en la API
+            textField: "clave", // campo que trae el texto a mostrar
+            hiddenField: "producto_id",
+            callback: function(item) {
+                console.log("Seleccionado:", item);
+                $('#producto_id_table').val(item.id);
+            }
+        });
+
+
         $("#empleado_id").populateSelect({
             obj: data.data.data.empleados,
             map: { value: "id", text: ["descripcion"] },
@@ -34,7 +47,8 @@ $(document).ready(function () {
             key: 'id',
             tableObj: data.data.data.detalles,
             columns: [
-                { key: 'producto_id', field: $("#producto_id_table") },
+                { key: 'producto_clave', field: $("#producto_clave_table") },
+                { key: 'producto_id', field: $("#producto_id_table"), hidden: true },
                 { key: 'cantidad', field: $("#cantidad_table") },
                 { key: 'descripcion', field: $("#descripcion_table")},
                 { key: 'observacion', field: $("#observacion_table") }

@@ -9,11 +9,39 @@
     },
 
     /**
+     * Detecta el entorno actual (producción o local)
+     * y devuelve el path correcto a la carpeta de módulos
+     */
+    getBaseModulesPath: function () {
+      const origin = window.location.origin;
+      const pathname = window.location.pathname;
+
+      // Si en local está dentro de /conectotal_web/
+      if (pathname.includes('/conectotal_web/')) {
+        return `${origin}/conectotal_web/modules`;
+      }
+
+      // En producción (simecproyectos.net) o si está en raíz
+      return `${origin}/modules`;
+    },
+
+    /**
      * Construye la URL absoluta hacia un módulo
-     * Ejemplo: https://simecproyectos.net/home.html?modulo=empleados&id=10
+     * Detecta automáticamente si está dentro de una subcarpeta (como /conectotal_web/)
+     * Ejemplo: http://localhost:82/conectotal_web/home.html?modulo=empleados
      */
     getModuloUrl: function (modulo, id = null) {
-      const url = new URL(this.getBasePath() + '/home.html');
+      const origin = window.location.origin;
+      const pathname = window.location.pathname;
+
+      // Detectar si el sistema está dentro de una subcarpeta (como /conectotal_web/)
+      let basePath = '';
+      const match = pathname.match(/^(\/[^/]+)\//);
+      if (match && match[1] !== '/home.html') {
+        basePath = match[1];
+      }
+
+      const url = new URL(`${origin}${basePath}/home.html`);
       url.searchParams.set('modulo', modulo);
       if (id !== null) url.searchParams.set('id', id);
       return url.toString();
@@ -39,8 +67,14 @@
       const modulo = params.get('modulo') || 'dashboard';
       const id = params.get('id') || null;
 
-      const rutaHtml = `modules/${modulo}.html`;
-      const rutaJs = `modules/${modulo}.js`;
+      // Usa la ruta dinámica que detecta el entorno
+      const baseModulesPath = this.getBaseModulesPath();
+      const rutaHtml = `${baseModulesPath}/${modulo}.html`;
+      const rutaJs = `${baseModulesPath}/${modulo}.js`;
+
+      console.log(`📦 Cargando módulo: ${modulo}`);
+      console.log(`→ HTML: ${rutaHtml}`);
+      console.log(`→ JS: ${rutaJs}`);
 
       $('#contenido').load(rutaHtml, function (response, status) {
         if (status === 'error') {
@@ -50,7 +84,7 @@
         } else {
           $.getScript(rutaJs)
             .done(() => {
-              console.log(`✅ ${modulo}.js cargado`);
+              console.log(`✅ ${modulo}.js cargado correctamente`);
               if (typeof ERP.onModuloCargado === 'function') {
                 ERP.onModuloCargado(modulo, id);
               }
@@ -84,7 +118,17 @@
      * Cambia de módulo dinámicamente y actualiza la URL
      */
     navegarAModulo: function (modulo, id = null) {
-      const url = new URL(this.getBasePath() + '/home.html');
+      const origin = window.location.origin;
+      const pathname = window.location.pathname;
+
+      // Detectar si el sistema está dentro de una subcarpeta
+      let basePath = '';
+      const match = pathname.match(/^(\/[^/]+)\//);
+      if (match && match[1] !== '/home.html') {
+        basePath = match[1];
+      }
+
+      const url = new URL(`${origin}${basePath}/home.html`);
       url.searchParams.set('modulo', modulo);
       if (id !== null) url.searchParams.set('id', id);
 

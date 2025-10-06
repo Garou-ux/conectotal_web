@@ -70,7 +70,16 @@
                             <tbody>
                                 <tr id="formRequisicionDetalle">
                                     <td>
-                                        <select req id="producto_id_table" name="producto_id_table" class="form-select form-control form-control-sm"></select>
+                                        <!-- <select req id="producto_id_table" name="producto_id_table" class="form-select form-control form-control-sm"></select> -->
+                                    <div class="form-group col-md-12">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control form-control-sm" id="producto_clave_table" placeholder="Buscar Producto...">
+                                        <button class="btn btn-outline-secondary" type="button" id="producto_clave_table_list">
+                                        <i class="fa fa-list"></i>
+                                        </button>
+                                    </div>
+                                    <input type="hidden" id="producto_id_table" value="0">
+                                    </div>
                                     </td>
                                     <td>
                                         <input type="text" class="form-control form-control-xs" id="cantidad_table" value="1" style="text-align: right">
@@ -101,6 +110,32 @@
                 </div>
             </div>
             </form>
+
+            <!-- Modal de búsqueda -->
+            <div class="modal fade" id="autocompleteModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content shadow">
+                <div class="modal-header">
+                    <h5 class="modal-title">Buscar Producto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-2">
+                    <div class="col-12">
+                        <input type="text" class="form-control form-control-sm" id="filterMS_input" placeholder="Filtrar resultados...">
+                    </div>
+                    </div>
+                    <table class="table table-hover table-sm">
+                    <tbody></tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="buttonAceptar" class="btn btn-success btn-sm">Aceptar</button>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+                </div>
+            </div>
+            </div>
         </div>
     </div>
 </div>
