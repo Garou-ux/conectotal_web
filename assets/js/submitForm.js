@@ -4,14 +4,24 @@ function submitForm({
   validation = {},
   onSuccess = () => {},
   onError = () => {},
-  callbackExtraParams = () => ({})
+  callbackExtraParams = () => ({}),
+  confirmAlert = false,
+  confirmMessage = '¿Deseas continuar?',
+  validateArrays = null
 }) {
   const $form = $(`#${formId}`);
 
   $form.on('submit', function (e) {
     e.preventDefault();
 
-    // Validación personalizada por campo
+    let userConfirmed = null; // null = no aplica
+
+    // Confirmación opcional (pero no bloquea envío)
+    if (confirmAlert && confirmMessage) {
+      userConfirmed = confirm(confirmMessage); // true o false
+    }
+
+    // Validación de campos simples
     for (const field in validation) {
       const $input = $form.find(`[name="${field}"]`);
       const rule = validation[field];
@@ -24,7 +34,7 @@ function submitForm({
       if (!isValid) {
         alert(rule.label || `El campo ${field} es obligatorio`);
         $input.focus();
-        return; // Detener envío
+        return;
       }
     }
 
@@ -52,11 +62,20 @@ function submitForm({
       formData['id'] = parseInt(id);
     }
 
+    // Agregar confirmación (aunque sea null)
+    formData['__confirm'] = userConfirmed;
+
     // Combinar con parámetros extra
     const extraParams = callbackExtraParams(formData);
-    $.extend(formData, extraParams); // Extiende formData con los extras
+    $.extend(formData, extraParams);
 
-    // Enviar los datos a la API
+    // Validar arrays (si existe callback)
+    if (typeof validateArrays === 'function') {
+      const arraysValid = validateArrays(formData);
+      if (!arraysValid) return;
+    }
+
+    // Enviar los datos
     Api.post(apiPath, formData)
       .then(onSuccess)
       .catch(onError);

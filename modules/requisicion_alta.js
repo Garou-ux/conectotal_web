@@ -64,25 +64,37 @@ $(document).ready(function () {
 
     });
 
-    submitForm({
-        formId: 'formController',
-        apiPath: '/requisiciones/setData',
-        validation: {
-        },
-        callbackExtraParams: function(formData) {
-            return {
-            detalle: tableConceptos.tableObj,
-            };
-        },
-        onSuccess: () => {
-            alert('Guardado correctamente');
-            ERP.navegarAModulo('requisiciones');
-        },
-        onError: (err) => {
-            console.error('Error al guardar:', err);
-            alert('Error al guardar. Ver consola.');
-        }
-    });
+submitForm({
+  formId: 'formController',
+  apiPath: '/requisiciones/setData',
+  confirmAlert: true,
+  confirmMessage: 'Los productos no existentes, ¿deseas guardarlos?',
+  validation: {
+    fecha: {
+      label: 'La fecha es obligatoria',
+      eval: 'value !== ""'
+    },
+    empleado_id: {
+      label: 'el solicitante es requerido',
+      eval: 'value !== ""'
+    },
+  },
+  callbackExtraParams: function(formData) {
+    return {
+      detalle: tableConceptos.tableObj,
+    };
+  },
+  onSuccess: () => {
+    alert('Guardado correctamente');
+    ERP.navegarAModulo('requisiciones');
+  },
+  onError: (err) => {
+    console.error('Error al guardar:', err);
+    alert('Error al guardar. Ver consola.');
+  }
+});
+
+
 
     ERP.controlesDiv();
 
