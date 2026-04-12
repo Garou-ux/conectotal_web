@@ -1,0 +1,111 @@
+﻿<div class="main-body">
+    <div class="page-wrapper">
+        <div class="page-header">
+            <div class="row align-items-end">
+                <div class="col-lg-8">
+                    <div class="page-header-title">
+                        <div class="d-inline">
+                            <h4>Plantilla de Proyecto <span id="titulo"></span></h4>
+                            <span>Configura la semana, el supervisor y la programación diaria de cada trabajador</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-body">
+            <form id="formController">
+                <input type="hidden" id="id" name="id" value="0" />
+
+                <div class="col-xl-12 col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Encabezado</h5>
+                            <div class="card-header-right">
+                                <ul class="list-unstyled card-option">
+                                    <li><i class="feather minimize-card icon-minus"></i></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-block">
+                            <div class="row form-row">
+                                <div class="form-group col-sm-4">
+                                    <label for="supervisor_id">Supervisor:</label>
+                                    <select id="supervisor_id" name="supervisor_id" class="form-control form-control-sm"></select>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="catalogo_semana_id">Semana:</label>
+                                    <select id="catalogo_semana_id" name="catalogo_semana_id" class="form-control form-control-sm"></select>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="numero_proyecto">No. Proyecto base:</label>
+                                    <input type="text" class="form-control form-control-sm" id="numero_proyecto" name="numero_proyecto">
+                                </div>
+                            </div>
+                            <div class="row form-row">
+                                <div class="form-group col-sm-2">
+                                    <label for="anio">Año:</label>
+                                    <input type="number" class="form-control form-control-sm" id="anio" name="anio" readonly>
+                                </div>
+                                <div class="form-group col-sm-2">
+                                    <label for="mes">Mes:</label>
+                                    <input type="number" class="form-control form-control-sm" id="mes" name="mes" readonly>
+                                </div>
+                                <div class="form-group col-sm-2">
+                                    <label for="semana">Semana:</label>
+                                    <input type="number" class="form-control form-control-sm" id="semana" name="semana" readonly>
+                                </div>
+                                <div class="form-group col-sm-3">
+                                    <label for="fecha_inicio">Inicio:</label>
+                                    <input type="date" class="form-control form-control-sm" id="fecha_inicio" name="fecha_inicio" readonly>
+                                </div>
+                                <div class="form-group col-sm-3">
+                                    <label for="fecha_fin">Fin:</label>
+                                    <input type="date" class="form-control form-control-sm" id="fecha_fin" name="fecha_fin" readonly>
+                                </div>
+                            </div>
+                            <div class="row form-row">
+                                <div class="form-group col-sm-12">
+                                    <label for="observaciones">Observaciones:</label>
+                                    <textarea class="form-control form-control-sm" id="observaciones" name="observaciones" rows="2"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
+                        <h5>Trabajadores</h5>
+                        <button type="button" id="buttonAgregarDetalle" class="btn btn-success btn-sm">
+                            <i class="icofont icofont-ui-add"></i> Agregar trabajador
+                        </button>
+                    </div>
+                    <div class="card-block">
+                        <div id="detallesContainer"></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
+                        <h5>Vista previa del reporte</h5>
+                        <button type="button" id="buttonVerReporte" class="btn btn-info btn-sm" style="display:none;">Abrir reporte completo</button>
+                    </div>
+                    <div class="card-block">
+                        <div id="reportPreview" class="table-responsive">
+                            <div class="alert alert-info m-b-0">Guarda la plantilla para ver el reporte consolidado.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-12 col-md-12">
+                    <div class="card">
+                        <div class="card-block">
+                            <button type="submit" id="buttonSave" class="btn btn-primary">Guardar</button>
+                            <button type="button" id="buttonCerrar" class="btn btn-danger">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

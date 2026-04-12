@@ -1,4 +1,4 @@
-function DataTableComponent(containerId, apiColumnsPath, apiDataPath, moduloAltaRuta, options = {}) {
+﻿function DataTableComponent(containerId, apiColumnsPath, apiDataPath, moduloAltaRuta, options = {}) {
   this.containerId = containerId;
   this.apiColumnsPath = apiColumnsPath;
   this.apiDataPath = apiDataPath;
@@ -7,13 +7,13 @@ function DataTableComponent(containerId, apiColumnsPath, apiDataPath, moduloAlta
   this.enableDateRange = options.enableDateRange || false;
   this.tableInstance = null;
   this._controlsBuilt = false;
-  this.headerClass = options.headerClass || ''; // <- nueva
+  this.headerClass = options.headerClass || '';
+  this.extraActions = Array.isArray(options.extraActions) ? options.extraActions : [];
 }
 
 DataTableComponent.prototype.init = async function (onDataLoaded = () => {}) {
   const self = this;
 
-  // Construye controles una sola vez
   if (!this._controlsBuilt) {
     $(`#${this.containerId}`).before(this._buildControlCard());
     if (self.enableDateRange) this._initDateFields();
@@ -36,34 +36,42 @@ DataTableComponent.prototype.init = async function (onDataLoaded = () => {}) {
 
     if (typeof onDataLoaded === 'function') onDataLoaded(datos);
 
-    // Arma columnas para DataTables
     const dtColumns = columnas.map(col => ({
       data: col.dataField,
       title: col.caption
     }));
 
-    // Columna de acciones
     dtColumns.push({
       data: null,
       title: 'Acciones',
       orderable: false,
       searchable: false,
-      width: '120px',
+      width: self.extraActions.length ? '180px' : '120px',
       render: function (data, type, row) {
+        const extraButtons = self.extraActions.map((action, index) => `
+          <button
+            class="btn btn-sm ${action.className || 'btn-info'} btn-extra-action"
+            data-id="${row.id}"
+            data-extra-index="${index}"
+            title="${action.title || 'Accion'}"
+            type="button"
+          >${action.text || '•'}</button>
+        `).join('');
+
         return `
-          <div class="d-flex gap-1">
-            <button class="btn btn-sm btn-primary btn-edit" data-id="${row.id}" title="Editar">✎</button>
-            <button class="btn btn-sm btn-danger btn-delete" data-id="${row.id}" title="Eliminar">🗑</button>
+          <div class="d-flex gap-1 flex-wrap">
+            <button class="btn btn-sm btn-primary btn-edit" data-id="${row.id}" title="Editar" type="button">✎</button>
+            ${extraButtons}
+            <button class="btn btn-sm btn-danger btn-delete" data-id="${row.id}" title="Eliminar" type="button">🗑</button>
           </div>
         `;
       }
     });
 
-    // Si ya existe, destruye y reconstruye para evitar duplicados/residual
     if (self.tableInstance) {
       self.tableInstance.clear();
       self.tableInstance.destroy();
-      $(`#${self.containerId}`).empty(); // limpia el DOM
+      $(`#${self.containerId}`).empty();
       self.tableInstance = null;
     }
 
@@ -76,10 +84,11 @@ DataTableComponent.prototype.init = async function (onDataLoaded = () => {}) {
         url: '//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json'
       }
     });
-if (self.headerClass) {
-  $(`#${self.containerId} thead`).addClass(self.headerClass);
-}
-    // Delegación de eventos para editar/eliminar (funciona tras redraw / responsive)
+
+    if (self.headerClass) {
+      $(`#${self.containerId} thead`).addClass(self.headerClass);
+    }
+
     $(`#${self.containerId}`)
       .off('click.dt.edit')
       .on('click.dt.edit', '.btn-edit', function () {
@@ -88,14 +97,24 @@ if (self.headerClass) {
       });
 
     $(`#${self.containerId}`)
+      .off('click.dt.extra')
+      .on('click.dt.extra', '.btn-extra-action', function () {
+        const actionIndex = parseInt($(this).data('extra-index'), 10);
+        const action = self.extraActions[actionIndex];
+        if (!action || typeof action.onClick !== 'function') return;
+
+        const row = self.tableInstance.row($(this).closest('tr')).data() || { id: $(this).data('id') };
+        action.onClick(row);
+      });
+
+    $(`#${self.containerId}`)
       .off('click.dt.delete')
       .on('click.dt.delete', '.btn-delete', function () {
-      const id = $(this).data('id');
-      if (confirm('¿Eliminar este registro?')) {
-        // Aquí implementar DELETE real y luego recargar si es necesario
-        alert('Eliminar: ID ' + id);
-      }
-    });
+        const id = $(this).data('id');
+        if (confirm('¿Eliminar este registro?')) {
+          alert('Eliminar: ID ' + id);
+        }
+      });
 
   } catch (err) {
     console.error('Error en DataTableComponent:', err);
@@ -154,14 +173,12 @@ DataTableComponent.prototype._getFilterParams = function () {
 DataTableComponent.prototype._bindEvents = function (onDataLoaded) {
   const self = this;
 
-  // Nuevo
   $(document)
     .off('click.dt.new')
     .on('click.dt.new', '#dt-btnNuevo', function () {
       self.navegarAModulo(0);
     });
 
-  // Recargar: destruye y vuelve a inicializar
   $(document)
     .off('click.dt.reload')
     .on('click.dt.reload', '#dt-btnRecargar', function () {
@@ -173,7 +190,6 @@ DataTableComponent.prototype._bindEvents = function (onDataLoaded) {
       self.init(onDataLoaded);
     });
 
-  // Exportar
   $(document)
     .off('click.dt.export')
     .on('click.dt.export', '#dt-btnExportar', function () {
@@ -184,12 +200,10 @@ DataTableComponent.prototype._bindEvents = function (onDataLoaded) {
       XLSX.writeFile(wb, 'export.xlsx');
     });
 
-  // Fecha (si aplica)
   if (this.enableDateRange) {
     $(document)
       .off('change.dt.dates')
       .on('change.dt.dates', '#dt-dateStart, #dt-dateEnd', function () {
-        // recarga con nuevo filtro
         if (self.tableInstance) {
           self.tableInstance.clear();
           self.tableInstance.destroy();
