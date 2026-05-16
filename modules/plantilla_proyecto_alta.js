@@ -136,14 +136,25 @@ function selectCurrentSemana() {
   const semana = findCurrentSemana();
   if (!semana) return;
 
-  $('#catalogo_semana_id').val(semana.id);
+  $('#catalogo_semana_id').val(String(semana.id)).trigger('change.select2');
 }
 
 function findCurrentSemana() {
   const today = clearTime(new Date());
+  const byCurrentFlag = plantillaProyectoState.semanas.find(item =>
+    isTruthy(item.actual) ||
+    isTruthy(item.es_actual) ||
+    isTruthy(item.current) ||
+    isTruthy(item.is_current) ||
+    isTruthy(item.vigente) ||
+    isTruthy(item.semana_actual)
+  );
+
+  if (byCurrentFlag) return byCurrentFlag;
+
   const byDateRange = plantillaProyectoState.semanas.find(item => {
-    const start = parseLocalDate(item.fecha_inicio);
-    const end = parseLocalDate(item.fecha_fin);
+    const start = parseLocalDate(getFirstValue(item, ['fecha_inicio', 'fecha_inicial', 'inicio', 'start', 'start_date']));
+    const end = parseLocalDate(getFirstValue(item, ['fecha_fin', 'fecha_final', 'fin', 'end', 'end_date']));
 
     return start && end && today >= start && today <= end;
   });
@@ -151,11 +162,18 @@ function findCurrentSemana() {
   if (byDateRange) return byDateRange;
 
   const currentYear = today.getFullYear();
-  const currentWeek = getIsoWeekNumber(today);
+  const currentWeeks = [
+    getIsoWeekNumber(today),
+    getSundayWeekNumber(today),
+    getMondayWeekNumber(today)
+  ];
 
   return plantillaProyectoState.semanas.find(item =>
     parseInt(item.anio, 10) === currentYear &&
-    parseInt(item.semana, 10) === currentWeek
+    currentWeeks.includes(parseInt(item.semana, 10))
+  ) || plantillaProyectoState.semanas.find(item =>
+    parseInt(item.anio, 10) === currentYear &&
+    currentWeeks.some(week => containsWeekNumber(item.descripcion, week))
   ) || null;
 }
 
@@ -714,15 +732,35 @@ function formatDateInput(value) {
 function parseLocalDate(value) {
   if (!value) return null;
 
-  const normalized = formatDateInput(value);
-  const parts = normalized.split('-').map(part => parseInt(part, 10));
+  if (value instanceof Date) return clearTime(value);
+
+  const normalized = String(value).trim().substring(0, 10).replace(/\//g, '-');
+  let parts = normalized.split('-').map(part => parseInt(part, 10));
   if (parts.length !== 3 || parts.some(Number.isNaN)) return null;
 
-  return clearTime(new Date(parts[0], parts[1] - 1, parts[2]));
+  if (parts[0] > 31) {
+    return clearTime(new Date(parts[0], parts[1] - 1, parts[2]));
+  }
+
+  return clearTime(new Date(parts[2], parts[1] - 1, parts[0]));
 }
 
 function clearTime(date) {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}
+
+function getFirstValue(obj, keys) {
+  const key = keys.find(item => obj[item] !== undefined && obj[item] !== null && obj[item] !== '');
+  return key ? obj[key] : null;
+}
+
+function isTruthy(value) {
+  return value === true || value === 1 || value === '1' || String(value).toLowerCase() === 'true' || String(value).toLowerCase() === 'si';
+}
+
+function containsWeekNumber(value, week) {
+  if (!value) return false;
+  return new RegExp(`(^|\\D)${week}(\\D|$)`).test(String(value));
 }
 
 function getIsoWeekNumber(date) {
@@ -731,6 +769,17 @@ function getIsoWeekNumber(date) {
 
   const yearStart = new Date(current.getFullYear(), 0, 1);
   return Math.ceil((((current - yearStart) / 86400000) + 1) / 7);
+}
+
+function getSundayWeekNumber(date) {
+  const yearStart = new Date(date.getFullYear(), 0, 1);
+  return Math.floor(((clearTime(date) - yearStart) / 86400000 + yearStart.getDay()) / 7) + 1;
+}
+
+function getMondayWeekNumber(date) {
+  const yearStart = new Date(date.getFullYear(), 0, 1);
+  const yearStartDay = yearStart.getDay() || 7;
+  return Math.floor(((clearTime(date) - yearStart) / 86400000 + yearStartDay - 1) / 7) + 1;
 }
 
 function toYmd(date) {
