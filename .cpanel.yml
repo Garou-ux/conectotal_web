@@ -4,7 +4,25 @@ deployment:
     - export DEPLOYPATH=/home3/simecpro/public_html/
     - /bin/mkdir -p $DEPLOYPATH
     - /bin/mkdir -p $DEPLOYPATH/assets
-    - /bin/mkdir -p $DEPLOYPATH/assets/bower_components
+    - /bin/mkdir -p $DEPLOYPATH/assets/bower_components/bootstrap/dist/css
+    - /bin/mkdir -p $DEPLOYPATH/assets/bower_components/bootstrap/dist/js
+    - /bin/mkdir -p $DEPLOYPATH/assets/bower_components/datatables.net/js
+    - /bin/mkdir -p $DEPLOYPATH/assets/bower_components/datatables.net-bs4/css
+    - /bin/mkdir -p $DEPLOYPATH/assets/bower_components/datatables.net-buttons/js
+    - /bin/mkdir -p $DEPLOYPATH/assets/bower_components/datatables.net-responsive/js
+    - /bin/mkdir -p $DEPLOYPATH/assets/bower_components/datatables.net-responsive-bs4/css
+    - /bin/mkdir -p $DEPLOYPATH/assets/bower_components/datatables.net-responsive-bs4/js
+    - /bin/mkdir -p $DEPLOYPATH/assets/bower_components/i18next
+    - /bin/mkdir -p $DEPLOYPATH/assets/bower_components/i18next-browser-languagedetector
+    - /bin/mkdir -p $DEPLOYPATH/assets/bower_components/i18next-xhr-backend
+    - /bin/mkdir -p $DEPLOYPATH/assets/bower_components/jquery/dist
+    - /bin/mkdir -p $DEPLOYPATH/assets/bower_components/jquery-i18next
+    - /bin/mkdir -p $DEPLOYPATH/assets/bower_components/jquery-slimscroll
+    - /bin/mkdir -p $DEPLOYPATH/assets/bower_components/jquery-ui
+    - /bin/mkdir -p $DEPLOYPATH/assets/bower_components/modernizr/feature-detects
+    - /bin/mkdir -p $DEPLOYPATH/assets/bower_components/popper.js/dist/umd
+    - /bin/mkdir -p $DEPLOYPATH/assets/bower_components/select2/dist/css
+    - /bin/mkdir -p $DEPLOYPATH/assets/bower_components/select2/dist/js
     - /bin/mkdir -p $DEPLOYPATH/assets/pages
     - /bin/mkdir -p $DEPLOYPATH/assets/jsgrid-1.5.3
     - /bin/cp -R assets/css $DEPLOYPATH/assets
@@ -12,24 +30,39 @@ deployment:
     - /bin/cp -R assets/icon $DEPLOYPATH/assets
     - /bin/cp -R assets/images $DEPLOYPATH/assets
     - /bin/cp -R assets/js $DEPLOYPATH/assets
-    - /bin/cp -R assets/pcassets $DEPLOYPATH/assets
-    - /bin/cp -R assets/bower_components/bootstrap $DEPLOYPATH/assets/bower_components
-    - /bin/cp -R assets/bower_components/datatables.net $DEPLOYPATH/assets/bower_components
-    - /bin/cp -R assets/bower_components/datatables.net-bs4 $DEPLOYPATH/assets/bower_components
-    - /bin/cp -R assets/bower_components/datatables.net-buttons $DEPLOYPATH/assets/bower_components
-    - /bin/cp -R assets/bower_components/datatables.net-responsive $DEPLOYPATH/assets/bower_components
-    - /bin/cp -R assets/bower_components/datatables.net-responsive-bs4 $DEPLOYPATH/assets/bower_components
-    - /bin/cp -R assets/bower_components/i18next $DEPLOYPATH/assets/bower_components
-    - /bin/cp -R assets/bower_components/i18next-browser-languagedetector $DEPLOYPATH/assets/bower_components
-    - /bin/cp -R assets/bower_components/i18next-xhr-backend $DEPLOYPATH/assets/bower_components
-    - /bin/cp -R assets/bower_components/jquery $DEPLOYPATH/assets/bower_components
-    - /bin/cp -R assets/bower_components/jquery-i18next $DEPLOYPATH/assets/bower_components
-    - /bin/cp -R assets/bower_components/jquery-slimscroll $DEPLOYPATH/assets/bower_components
-    - /bin/cp -R assets/bower_components/jquery-ui $DEPLOYPATH/assets/bower_components
-    - /bin/cp -R assets/bower_components/modernizr $DEPLOYPATH/assets/bower_components
-    - /bin/cp -R assets/bower_components/popper.js $DEPLOYPATH/assets/bower_components
-    - /bin/cp -R assets/bower_components/select2 $DEPLOYPATH/assets/bower_components
-    - /bin/cp -R assets/pages/data-table $DEPLOYPATH/assets/pages
+    - /bin/cp assets/bower_components/bootstrap/dist/css/bootstrap.min.css $DEPLOYPATH/assets/bower_components/bootstrap/dist/css
+    - /bin/cp assets/bower_components/bootstrap/dist/js/bootstrap.min.js $DEPLOYPATH/assets/bower_components/bootstrap/dist/js
+    - /bin/cp assets/bower_components/datatables.net/js/jquery.dataTables.js $DEPLOYPATH/assets/bower_components/datatables.net/js
+    - /bin/cp assets/bower_components/datatables.net-bs4/css/dataTables.bootstrap4.min.css $DEPLOYPATH/assets/bower_components/datatables.net-bs4/css
+    - /bin/cp assets/bower_components/datatables.net-buttons/js/dataTables.buttons.js $DEPLOYPATH/assets/bower_components/datatables.net-buttons/js
+    - /bin/cp assets/bower_components/datatables.net-buttons/js/buttons.print.js $DEPLOYPATH/assets/bower_components/datatables.net-buttons/js
+    - /bin/cp assets/bower_components/datatables.net-buttons/js/buttons.html5.js $DEPLOYPATH/assets/bower_components/datatables.net-buttons/js
+    - /bin/cp assets/bower_components/datatables.net-responsive/js/dataTables.responsive.js $DEPLOYPATH/assets/bower_components/datatables.net-responsive/js
+    - /bin/cp assets/bower_components/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css $DEPLOYPATH/assets/bower_components/datatables.net-responsive-bs4/css
+    - /bin/cp assets/bower_components/datatables.net-responsive-bs4/js/responsive.bootstrap4.js $DEPLOYPATH/assets/bower_components/datatables.net-responsive-bs4/js
+    - /bin/cp assets/bower_components/i18next/i18next.min.js $DEPLOYPATH/assets/bower_components/i18next
+    - /bin/cp assets/bower_components/i18next-browser-languagedetector/i18nextBrowserLanguageDetector.min.js $DEPLOYPATH/assets/bower_components/i18next-browser-languagedetector
+    - /bin/cp assets/bower_components/i18next-xhr-backend/i18nextXHRBackend.min.js $DEPLOYPATH/assets/bower_components/i18next-xhr-backend
+    - /bin/cp assets/bower_components/jquery/dist/jquery.min.js $DEPLOYPATH/assets/bower_components/jquery/dist
+    - /bin/cp assets/bower_components/jquery-i18next/jquery-i18next.min.js $DEPLOYPATH/assets/bower_components/jquery-i18next
+    - /bin/cp assets/bower_components/jquery-slimscroll/jquery.slimscroll.js $DEPLOYPATH/assets/bower_components/jquery-slimscroll
+    - /bin/cp assets/bower_components/jquery-ui/jquery-ui.min.js $DEPLOYPATH/assets/bower_components/jquery-ui
+    - /bin/cp assets/bower_components/modernizr/modernizr.js $DEPLOYPATH/assets/bower_components/modernizr
+    - /bin/cp assets/bower_components/modernizr/feature-detects/css-scrollbars.js $DEPLOYPATH/assets/bower_components/modernizr/feature-detects
+    - /bin/cp assets/bower_components/popper.js/dist/umd/popper.min.js $DEPLOYPATH/assets/bower_components/popper.js/dist/umd
+    - /bin/cp assets/bower_components/select2/dist/css/select2.min.css $DEPLOYPATH/assets/bower_components/select2/dist/css
+    - /bin/cp assets/bower_components/select2/dist/js/select2.full.min.js $DEPLOYPATH/assets/bower_components/select2/dist/js
+    - /bin/mkdir -p $DEPLOYPATH/assets/pages/data-table/css
+    - /bin/mkdir -p $DEPLOYPATH/assets/pages/data-table/js
+    - /bin/mkdir -p $DEPLOYPATH/assets/pages/data-table/extensions/responsive/js
+    - /bin/mkdir -p $DEPLOYPATH/assets/pages/data-table/extensions/responsive/css
+    - /bin/cp assets/pages/data-table/css/buttons.dataTables.min.css $DEPLOYPATH/assets/pages/data-table/css
+    - /bin/cp assets/pages/data-table/js/jszip.min.js $DEPLOYPATH/assets/pages/data-table/js
+    - /bin/cp assets/pages/data-table/js/pdfmake.min.js $DEPLOYPATH/assets/pages/data-table/js
+    - /bin/cp assets/pages/data-table/js/vfs_fonts.js $DEPLOYPATH/assets/pages/data-table/js
+    - /bin/cp assets/pages/data-table/js/dataTables.bootstrap4.min.js $DEPLOYPATH/assets/pages/data-table/js
+    - /bin/cp assets/pages/data-table/extensions/responsive/js/dataTables.responsive.min.js $DEPLOYPATH/assets/pages/data-table/extensions/responsive/js
+    - /bin/cp assets/pages/data-table/extensions/responsive/css/responsive.dataTables.css $DEPLOYPATH/assets/pages/data-table/extensions/responsive/css
     - /bin/cp -R assets/jsgrid-1.5.3/css $DEPLOYPATH/assets/jsgrid-1.5.3
     - /bin/cp -R assets/jsgrid-1.5.3/dist $DEPLOYPATH/assets/jsgrid-1.5.3
     - /bin/cp -R modules $DEPLOYPATH
