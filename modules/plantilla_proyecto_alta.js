@@ -28,6 +28,7 @@ $(document).ready(function () {
       loadReportPreview(data.id);
     } else {
       $('#titulo').text('Nueva');
+      selectCurrentSemana();
       plantillaProyectoState.detalles = [createEmptyDetalle()];
       syncHeaderWithSemana();
     }
@@ -129,6 +130,33 @@ function getSemanaSeleccionada() {
   const semanaId = parseInt($('#catalogo_semana_id').val(), 10);
   if (!semanaId) return null;
   return plantillaProyectoState.semanas.find(item => parseInt(item.id, 10) === semanaId) || null;
+}
+
+function selectCurrentSemana() {
+  const semana = findCurrentSemana();
+  if (!semana) return;
+
+  $('#catalogo_semana_id').val(semana.id);
+}
+
+function findCurrentSemana() {
+  const today = clearTime(new Date());
+  const byDateRange = plantillaProyectoState.semanas.find(item => {
+    const start = parseLocalDate(item.fecha_inicio);
+    const end = parseLocalDate(item.fecha_fin);
+
+    return start && end && today >= start && today <= end;
+  });
+
+  if (byDateRange) return byDateRange;
+
+  const currentYear = today.getFullYear();
+  const currentWeek = getIsoWeekNumber(today);
+
+  return plantillaProyectoState.semanas.find(item =>
+    parseInt(item.anio, 10) === currentYear &&
+    parseInt(item.semana, 10) === currentWeek
+  ) || null;
 }
 
 function syncHeaderWithSemana() {
@@ -681,6 +709,28 @@ function formatDateInput(value) {
   if (!value) return '';
   if (typeof value === 'string' && value.length >= 10) return value.substring(0, 10);
   return value;
+}
+
+function parseLocalDate(value) {
+  if (!value) return null;
+
+  const normalized = formatDateInput(value);
+  const parts = normalized.split('-').map(part => parseInt(part, 10));
+  if (parts.length !== 3 || parts.some(Number.isNaN)) return null;
+
+  return clearTime(new Date(parts[0], parts[1] - 1, parts[2]));
+}
+
+function clearTime(date) {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}
+
+function getIsoWeekNumber(date) {
+  const current = clearTime(date);
+  current.setDate(current.getDate() + 4 - (current.getDay() || 7));
+
+  const yearStart = new Date(current.getFullYear(), 0, 1);
+  return Math.ceil((((current - yearStart) / 86400000) + 1) / 7);
 }
 
 function toYmd(date) {
