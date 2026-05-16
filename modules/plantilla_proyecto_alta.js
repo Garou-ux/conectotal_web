@@ -24,6 +24,7 @@ $(document).ready(function () {
       MainFiller.fill(data);
       plantillaProyectoState.detalles = hydrateDetalles(data.detalles || []);
       $('#buttonVerReporte').show();
+      $('#buttonDescargarExcel').show();
       loadReportPreview(data.id);
     } else {
       $('#titulo').text('Nueva');
@@ -81,6 +82,12 @@ $(document).ready(function () {
   $('#buttonVerReporte').click(function () {
     if (plantillaProyectoState.selectedId > 0) {
       ERP.navegarAModulo('plantilla_proyecto_reporte', plantillaProyectoState.selectedId);
+    }
+  });
+
+  $('#buttonDescargarExcel').click(function () {
+    if (plantillaProyectoState.selectedId > 0) {
+      downloadReporteExcel(plantillaProyectoState.selectedId);
     }
   });
 });
@@ -419,7 +426,7 @@ function buildTrabajadorOptions(selectedId) {
     trabajadores = trabajadores.filter(item => parseInt(item.supervisor_id, 10) === supervisorId || parseInt(item.id, 10) === parseInt(selectedId, 10));
   }
 
-  return trabajadores.map(item => {
+  return trabajadores.slice().sort(compareTrabajadores).map(item => {
     const label = [item.nombre, item.apellido_paterno, item.apellido_materno].filter(Boolean).join(' ');
     const selected = parseInt(selectedId, 10) === parseInt(item.id, 10) ? 'selected' : '';
     return `<option value="${item.id}" ${selected}>${label}</option>`;
@@ -458,19 +465,27 @@ function buildDetallePayload() {
 
 function calculateResumen(detalle) {
   const dias = detalle.dias || [];
-  const tn = dias.reduce((acc, dia) => acc + (parseFloat(dia.horas_normales || 0) || 0), 0);
-  const hes = dias.reduce((acc, dia) => acc + (parseFloat(dia.horas_extra || 0) || 0), 0);
   const descansoDia = parseInt(detalle.descanso_dia, 10) || 7;
-  const descanso = dias.find(dia => dia.dia_semana === descansoDia);
-  const hdoBase = parseFloat(descanso?.horas_extra || 0) || 0;
-  const extraNoDescanso = dias.reduce((acc, dia) => {
-    if (dia.dia_semana === descansoDia) return acc;
-    return acc + (parseFloat(dia.horas_extra || 0) || 0);
-  }, 0);
+  let tn = 0;
+  let hes = 0;
+  let hdo = 0;
 
-  const hdo = Math.min(8, hdoBase);
-  const hd = Math.min(9, extraNoDescanso);
-  const ht = Math.max(0, hes - hdo - hd);
+  dias.forEach(dia => {
+    const normales = parseFloat(dia.horas_normales || 0) || 0;
+    const extras = parseFloat(dia.horas_extra || 0) || 0;
+    const esDescanso = parseInt(dia.dia_semana, 10) === descansoDia;
+
+    if (esDescanso) {
+      hdo += normales + extras;
+      return;
+    }
+
+    tn += normales;
+    hes += extras;
+  });
+
+  const hd = Math.min(9, hes);
+  const ht = Math.max(0, hes - hd);
 
   return {
     tn,
@@ -491,8 +506,75 @@ function loadReportPreview(id) {
   });
 }
 
+function downloadReporteExcel(id) {
+  const $button = $('#buttonDescargarExcel');
+  const originalText = $button.text();
+
+  $button.prop('disabled', true).text('Descargando...');
+
+  requestReporteExcel(id, Auth.getToken()).catch(function (err) {
+    if (err.status === 401) {
+      return Auth.refreshToken().then(function (newToken) {
+        return requestReporteExcel(id, newToken);
+      }).catch(function () {
+        Auth.logout();
+      });
+    }
+
+    throw err;
+  }).catch(function (err) {
+    console.error('Error descargando Excel:', err);
+    alert('No se pudo descargar el Excel. Revisa la consola.');
+  }).always(function () {
+    $button.prop('disabled', false).text(originalText);
+  });
+}
+
+function requestReporteExcel(id, token) {
+  return $.ajax({
+    url: Config.getBaseApiUrl() + '/plantillaProyectos/downloadReporteExcel',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/vnd.ms-excel, application/octet-stream',
+      'Authorization': 'Bearer ' + token
+    },
+    data: JSON.stringify({ id }),
+    xhrFields: {
+      responseType: 'blob'
+    }
+  }).then(function (blob, textStatus, xhr) {
+    const disposition = xhr.getResponseHeader('Content-Disposition') || '';
+    const filename = getDownloadFilename(disposition) || `reporte_plantilla_${id}.xls`;
+    triggerBlobDownload(blob, filename);
+  });
+}
+
+function getDownloadFilename(disposition) {
+  const utf8Match = disposition.match(/filename\*=UTF-8''([^;]+)/i);
+  if (utf8Match && utf8Match[1]) {
+    return decodeURIComponent(utf8Match[1].replace(/["']/g, ''));
+  }
+
+  const asciiMatch = disposition.match(/filename="?([^"]+)"?/i);
+  return asciiMatch && asciiMatch[1] ? asciiMatch[1] : '';
+}
+
+function triggerBlobDownload(blob, filename) {
+  const url = window.URL.createObjectURL(blob);
+  const link = document.createElement('a');
+
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  window.URL.revokeObjectURL(url);
+}
+
 function renderReportTable(reportData, selector) {
-  const rows = Array.isArray(reportData.rows) ? reportData.rows : [];
+  const rows = sortReportRows(Array.isArray(reportData.rows) ? reportData.rows : []);
   const dias = Array.isArray(reportData.dias) ? reportData.dias : [];
   const dayHeaders = dias.length ? dias.map(dia => `<th>${dia.label || dia.nombre_dia || 'Dia'}</th>`).join('') : '<th colspan="7">Sin dias</th>';
 
@@ -501,7 +583,7 @@ function renderReportTable(reportData, selector) {
     return;
   }
 
-  const body = rows.map(row => {
+  const body = rows.map((row, rowIndex) => {
     const mapDias = (collection, accessor) => dias.map(dia => {
       const detailDay = (collection || []).find(item => parseInt(item.dia_semana, 10) === parseInt(dia.dia_semana, 10)) || {};
       return `<td>${accessor(detailDay)}</td>`;
@@ -509,7 +591,7 @@ function renderReportTable(reportData, selector) {
 
     return `
       <tr>
-        <td rowspan="3">${row.numero}</td>
+        <td rowspan="3">${rowIndex + 1}</td>
         <td rowspan="3">${row.ficha || ''}</td>
         <td rowspan="3">${row.trabajador || ''}</td>
         <td><strong>TN</strong></td>
@@ -556,6 +638,35 @@ function renderReportTable(reportData, selector) {
       <tbody>${body}</tbody>
     </table>
   `);
+}
+
+function compareTrabajadores(a, b) {
+  return [
+    a.apellido_paterno || '',
+    a.apellido_materno || '',
+    a.nombre || ''
+  ].join(' ').localeCompare([
+    b.apellido_paterno || '',
+    b.apellido_materno || '',
+    b.nombre || ''
+  ].join(' '), 'es', { sensitivity: 'base' });
+}
+
+function sortReportRows(rows) {
+  return rows.slice().sort((a, b) => {
+    const aKey = [
+      a.apellido_paterno || a.trabajador_apellido_paterno || '',
+      a.apellido_materno || a.trabajador_apellido_materno || '',
+      a.nombre || a.trabajador_nombre || a.trabajador || ''
+    ].join(' ');
+    const bKey = [
+      b.apellido_paterno || b.trabajador_apellido_paterno || '',
+      b.apellido_materno || b.trabajador_apellido_materno || '',
+      b.nombre || b.trabajador_nombre || b.trabajador || ''
+    ].join(' ');
+
+    return aKey.localeCompare(bKey, 'es', { sensitivity: 'base' });
+  });
 }
 
 function formatDayLabel(date) {

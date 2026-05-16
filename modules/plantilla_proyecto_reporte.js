@@ -47,7 +47,7 @@ function renderPlantillaReporteHeader(header) {
 }
 
 function renderPlantillaReporteBody(reportData) {
-  const rows = Array.isArray(reportData.rows) ? reportData.rows : [];
+  const rows = sortReporteTrabajadores(Array.isArray(reportData.rows) ? reportData.rows : []);
   const dias = Array.isArray(reportData.dias) ? reportData.dias : [];
 
   if (!rows.length) {
@@ -57,7 +57,7 @@ function renderPlantillaReporteBody(reportData) {
 
   const dayHeaders = dias.map(dia => `<th>${dia.label || 'Dia'}</th>`).join('');
 
-  const body = rows.map(row => {
+  const body = rows.map((row, rowIndex) => {
     const findDay = (diaSemana) => (row.dias || []).find(item => parseInt(item.dia_semana, 10) === parseInt(diaSemana, 10)) || {};
 
     const normalCells = dias.map(dia => `<td>${parseFloat(findDay(dia.dia_semana).horas_normales || 0).toFixed(2)}</td>`).join('');
@@ -66,7 +66,7 @@ function renderPlantillaReporteBody(reportData) {
 
     return `
       <tr>
-        <td rowspan="3">${row.numero}</td>
+        <td rowspan="3">${rowIndex + 1}</td>
         <td rowspan="3">${row.ficha || ''}</td>
         <td rowspan="3">${row.trabajador || ''}</td>
         <td><strong>TN</strong></td>
@@ -113,4 +113,21 @@ function renderPlantillaReporteBody(reportData) {
       <tbody>${body}</tbody>
     </table>
   `);
+}
+
+function sortReporteTrabajadores(rows) {
+  return rows.slice().sort((a, b) => {
+    const aKey = [
+      a.apellido_paterno || a.trabajador_apellido_paterno || '',
+      a.apellido_materno || a.trabajador_apellido_materno || '',
+      a.nombre || a.trabajador_nombre || a.trabajador || ''
+    ].join(' ');
+    const bKey = [
+      b.apellido_paterno || b.trabajador_apellido_paterno || '',
+      b.apellido_materno || b.trabajador_apellido_materno || '',
+      b.nombre || b.trabajador_nombre || b.trabajador || ''
+    ].join(' ');
+
+    return aKey.localeCompare(bKey, 'es', { sensitivity: 'base' });
+  });
 }
