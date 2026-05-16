@@ -1,14 +1,19 @@
 const Auth = {
   login: function (email, password) {
+    const loginUrl = Config.getBaseApiUrl() + '/auth/login';
+
     return $.ajax({
-      url: Config.getBaseApiUrl() + '/auth/login',
+      url: loginUrl,
       method: 'POST',
+      headers: {
+        'Accept': 'application/json'
+      },
       contentType: 'application/json',
-      dataType: 'json', // 👈 asegura que jQuery parsee JSON
+      dataType: 'json',
       data: JSON.stringify({ email, password })
     })
       .done(res => {
-        console.log("✅ Login response:", res); // debug
+        console.log('Login response:', res);
         if (res.access_token) {
           sessionStorage.setItem('token', res.access_token);
           sessionStorage.setItem('user', JSON.stringify(res.user));
@@ -17,11 +22,21 @@ const Auth = {
         }
       })
       .fail(xhr => {
-        console.error("❌ Error en login:", xhr.status, xhr.responseText);
+        console.error('Error en login:', {
+          status: xhr.status,
+          statusText: xhr.statusText,
+          responseText: xhr.responseText,
+          responseJSON: xhr.responseJSON,
+          url: loginUrl
+        });
+
         const msg =
           xhr?.responseJSON?.message ||
           xhr?.responseJSON?.error ||
-          `Error ${xhr.status}: ${xhr.statusText}`;
+          (xhr.status === 0
+            ? 'No se pudo conectar con la API. Revisa CORS, SSL o bloqueo del navegador.'
+            : `Error ${xhr.status}: ${xhr.statusText}`);
+
         throw new Error(msg);
       });
   },
@@ -66,7 +81,7 @@ const Auth = {
       dataType: 'json'
     })
       .done(res => {
-        console.log("🔄 Refresh response:", res);
+        console.log('Refresh response:', res);
         if (res.access_token) {
           sessionStorage.setItem('token', res.access_token);
           return res.access_token;
@@ -75,7 +90,7 @@ const Auth = {
         }
       })
       .fail(xhr => {
-        console.error("❌ Error en refresh:", xhr.status, xhr.responseText);
+        console.error('Error en refresh:', xhr.status, xhr.responseText);
         throw new Error('Fallo al refrescar el token');
       });
   }
