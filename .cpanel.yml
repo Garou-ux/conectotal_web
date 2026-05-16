@@ -3,7 +3,35 @@ deployment:
   tasks:
     - export DEPLOYPATH=/home3/simecpro/public_html/
     - /bin/mkdir -p $DEPLOYPATH
-    - /bin/cp -R assets $DEPLOYPATH
+    - /bin/mkdir -p $DEPLOYPATH/assets
+    - /bin/mkdir -p $DEPLOYPATH/assets/bower_components
+    - /bin/mkdir -p $DEPLOYPATH/assets/pages
+    - /bin/mkdir -p $DEPLOYPATH/assets/jsgrid-1.5.3
+    - /bin/cp -R assets/css $DEPLOYPATH/assets
+    - /bin/cp -R assets/fonts $DEPLOYPATH/assets
+    - /bin/cp -R assets/icon $DEPLOYPATH/assets
+    - /bin/cp -R assets/images $DEPLOYPATH/assets
+    - /bin/cp -R assets/js $DEPLOYPATH/assets
+    - /bin/cp -R assets/pcassets $DEPLOYPATH/assets
+    - /bin/cp -R assets/bower_components/bootstrap $DEPLOYPATH/assets/bower_components
+    - /bin/cp -R assets/bower_components/datatables.net $DEPLOYPATH/assets/bower_components
+    - /bin/cp -R assets/bower_components/datatables.net-bs4 $DEPLOYPATH/assets/bower_components
+    - /bin/cp -R assets/bower_components/datatables.net-buttons $DEPLOYPATH/assets/bower_components
+    - /bin/cp -R assets/bower_components/datatables.net-responsive $DEPLOYPATH/assets/bower_components
+    - /bin/cp -R assets/bower_components/datatables.net-responsive-bs4 $DEPLOYPATH/assets/bower_components
+    - /bin/cp -R assets/bower_components/i18next $DEPLOYPATH/assets/bower_components
+    - /bin/cp -R assets/bower_components/i18next-browser-languagedetector $DEPLOYPATH/assets/bower_components
+    - /bin/cp -R assets/bower_components/i18next-xhr-backend $DEPLOYPATH/assets/bower_components
+    - /bin/cp -R assets/bower_components/jquery $DEPLOYPATH/assets/bower_components
+    - /bin/cp -R assets/bower_components/jquery-i18next $DEPLOYPATH/assets/bower_components
+    - /bin/cp -R assets/bower_components/jquery-slimscroll $DEPLOYPATH/assets/bower_components
+    - /bin/cp -R assets/bower_components/jquery-ui $DEPLOYPATH/assets/bower_components
+    - /bin/cp -R assets/bower_components/modernizr $DEPLOYPATH/assets/bower_components
+    - /bin/cp -R assets/bower_components/popper.js $DEPLOYPATH/assets/bower_components
+    - /bin/cp -R assets/bower_components/select2 $DEPLOYPATH/assets/bower_components
+    - /bin/cp -R assets/pages/data-table $DEPLOYPATH/assets/pages
+    - /bin/cp -R assets/jsgrid-1.5.3/css $DEPLOYPATH/assets/jsgrid-1.5.3
+    - /bin/cp -R assets/jsgrid-1.5.3/dist $DEPLOYPATH/assets/jsgrid-1.5.3
     - /bin/cp -R modules $DEPLOYPATH
     - /bin/cp -R partials $DEPLOYPATH
     - /bin/cp -R sections $DEPLOYPATH
